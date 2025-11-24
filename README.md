@@ -4,6 +4,10 @@ An ESP32-based flood monitoring system with offline web interface for real-time 
 
 ## Author
 **Lian Cunanan**
+**Ardyan Perez**
+**Kenneth Manarang**
+**Aldrich Icat**
+**Charles Mirande**
 
 ## Features
 
