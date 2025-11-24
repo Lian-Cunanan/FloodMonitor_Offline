@@ -1,10 +1,21 @@
 # 🌊 IoT Flood Monitoring System (Offline)
 
+<<<<<<< HEAD
 A comprehensive ESP32-based flood monitoring system with real-time web dashboard for water level monitoring, environmental sensors, and automated flood gate control.
 
 ![System Status](https://img.shields.io/badge/Status-Active-brightgreen)
 ![Platform](https://img.shields.io/badge/Platform-ESP32-blue)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
+=======
+An ESP32-based flood monitoring system with offline web interface for real-time water level monitoring and gate control.
+test commit
+## Authors
+- **Lian Cunanan**
+- **Ardyan Perez**
+- **Kenneth Manarang**
+- **Aldrich Icat**
+- **Charles Mirande**
+>>>>>>> 92f8a5a07aade09f9c60a8c48e064cfe966886c4
 
 ## 👥 Authors
 - **Lian Cunanan** - Lead Developer
