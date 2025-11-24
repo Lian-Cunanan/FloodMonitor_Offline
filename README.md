@@ -1,10 +1,6 @@
 # FloodMonitor Offline
 
 An ESP32-based flood monitoring system with offline web interface for real-time water level monitoring and gate control.
-<<<<<<< HEAD
-Test commit
-=======
->>>>>>> 2fac360a015fe527ca686258d3af7c3d34d388ce
 
 ## Authors
 - **Lian Cunanan**
