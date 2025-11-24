@@ -2,12 +2,12 @@
 
 An ESP32-based flood monitoring system with offline web interface for real-time water level monitoring and gate control.
 
-## Author
-**Lian Cunanan**
-**Ardyan Perez**
-**Kenneth Manarang**
-**Aldrich Icat**
-**Charles Mirande**
+## Authors
+- **Lian Cunanan**
+- **Ardyan Perez**
+- **Kenneth Manarang**
+- **Aldrich Icat**
+- **Charles Mirande**
 
 ## Features
 
