@@ -2,6 +2,9 @@
 
 An ESP32-based flood monitoring system with offline web interface for real-time water level monitoring and gate control.
 
+## Author
+**Lian Cunanan**
+
 ## Features
 
 - Real-time water level monitoring with visual gauges
@@ -36,7 +39,7 @@ An ESP32-based flood monitoring system with offline web interface for real-time 
 
 ### Installation
 
-1. Clone this repository
+1. Clone this repository: `git clone https://github.com/Lian-Cunanan/FloodMonitor_Offline.git`
 2. Open the main .ino file in Arduino IDE
 3. Install libraries listed in `libraries.txt`
 4. Configure your WiFi credentials
