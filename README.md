@@ -34,36 +34,36 @@ The **IoT Flood Monitor Pro** is a student-developed flood monitoring system des
 <table align="center">
   <tr>
     <td align="center">
-      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Lian&backgroundColor=b6e3f4&clothesColor=2563eb&eyesColor=brown&hairColor=brown&mouthColor=d63384&skinColor=f8d25c" width="100px;" alt="Lian Cunanan"/><br />
+      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face&auto=format" width="100px;" style="border-radius: 50%;" alt="Lian Cunanan"/><br />
       <sub><b>🚀 Lian Cunanan</b></sub><br />
       <sub>Lead Developer & System Architect</sub><br />
       <a href="https://github.com/Lian-Cunanan">GitHub</a> | 
       <a href="https://www.linkedin.com/in/lian-vince-cunanan-3930212a4/">LinkedIn</a>
     </td>
     <td align="center">
-      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Ardyan&backgroundColor=c3f7ff&clothesColor=10b981&eyesColor=blue&hairColor=black&skinColor=ae5d29" width="100px;" alt="Ardyan Perez"/><br />
+      <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face&auto=format" width="100px;" style="border-radius: 50%;" alt="Ardyan Perez"/><br />
       <sub><b>🔧 Ardyan Perez</b></sub><br />
       <sub>Hardware Engineer & IoT Specialist</sub>
     </td>
     <td align="center">
-      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Kenneth&backgroundColor=ffeaa7&clothesColor=f59e0b&eyesColor=green&hairColor=brown&skinColor=fdbcb4" width="100px;" alt="Kenneth Manarang"/><br />
+      <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&h=100&fit=crop&crop=face&auto=format" width="100px;" style="border-radius: 50%;" alt="Kenneth Manarang"/><br />
       <sub><b>💻 Kenneth Manarang</b></sub><br />
       <sub>Backend Developer & Database Engineer</sub>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Aldrich&backgroundColor=fab1a0&clothesColor=ef4444&eyesColor=brown&hairColor=red&skinColor=f8d25c" width="100px;" alt="Aldrich Icat"/><br />
+      <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&crop=face&auto=format" width="100px;" style="border-radius: 50%;" alt="Aldrich Icat"/><br />
       <sub><b>🎨 Aldrich Icat</b></sub><br />
       <sub>UI/UX Designer & Frontend Developer</sub>
     </td>
     <td align="center">
-      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Charles&backgroundColor=a29bfe&clothesColor=6c5ce7&eyesColor=brown&hairColor=black&skinColor=ae5d29" width="100px;" alt="Charles Mirande"/><br />
+      <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face&auto=format" width="100px;" style="border-radius: 50%;" alt="Charles Mirande"/><br />
       <sub><b>⚙️ Charles Mirande</b></sub><br />
       <sub>Systems Integrator & Testing</sub>
     </td>
     <td align="center">
-      <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Team&backgroundColor=74b9ff&clothesColor=00b894&eyesColor=blue&skinColor=f8d25c" width="100px;" alt="Team"/><br />
+      <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=100&h=100&fit=crop&crop=face&auto=format" width="100px;" style="border-radius: 50%;" alt="Team"/><br />
       <sub><b>🤝 Collaborative Team</b></sub><br />
       <sub>Innovation & Learning</sub>
     </td>
@@ -138,6 +138,30 @@ The **IoT Flood Monitor Pro** is a student-developed flood monitoring system des
 
 ## 🏗️ **System Architecture**
 
+```mermaid
+graph TB
+    A[🌊 Water Level Sensor] --> E[🔧 ESP32 Controller]
+    B[🌡️ Temperature/Humidity] --> E
+    C[🌧️ Rain Sensor] --> E
+    D[💡 Light Sensor] --> E
+    
+    E --> F[📊 Real-time Dashboard]
+    E --> G[🗄️ SQLite Database]
+    E --> H[🚪 Flood Gate Control]
+    
+    F --> I[📱 Mobile Interface]
+    F --> J[🖥️ Desktop Interface]
+    
+    G --> K[👥 User Management]
+    G --> L[📈 Data Analytics]
+    
+    style E fill:#2563eb,stroke:#1d4ed8,stroke-width:3px,color:#fff
+    style F fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff
+    style G fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#fff
+```
+
+### 🔄 **Data Flow Architecture**
+
 ```
 ┌─────────────────┐    ┌──────────────┐    ┌─────────────────┐
 │   Sensors       │───▶│    ESP32     │───▶│  Web Dashboard  │
@@ -145,7 +169,8 @@ The **IoT Flood Monitor Pro** is a student-developed flood monitoring system des
 │ • Water Level   │    │ • WiFi       │    │ • Real-time UI  │
 │ • Temperature   │    │ • Web Server │    │ • Controls      │
 │ • Humidity      │    │ • SQLite     │    │ • User Login    │
-│ • (Optional)    │    │ • Data Logger│    │ • Monitoring    │
+│ • Rain (Opt.)   │    │ • Data Logger│    │ • Monitoring    │
+│ • Light (Opt.)  │    │ • Auth System│    │ • Analytics     │
 └─────────────────┘    └──────────────┘    └─────────────────┘
                               │
                               ▼
@@ -153,6 +178,17 @@ The **IoT Flood Monitor Pro** is a student-developed flood monitoring system des
                     │   Flood Gate     │
                     │   (Servo Motor)  │
                     └──────────────────┘
+```
+
+### 🌐 **Network Architecture**
+
+```
+Internet ←→ Router ←→ ESP32 ←→ Sensors
+    ↑           ↑        ↑        ↑
+    │           │        │        └─ DHT22, HC-SR04, etc.
+    │           │        └─ Web Server (Port 80)
+    │           └─ 2.4GHz WiFi
+    └─ Remote Access via Browser
 ```
 
 ## 🔧 **Hardware Requirements**
