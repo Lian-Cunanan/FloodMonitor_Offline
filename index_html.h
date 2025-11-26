@@ -8,7 +8,6 @@ const char index_html[] PROGMEM = R"rawliteral(
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IoT Flood Monitoring System</title>
     <link rel="stylesheet" href="/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar">
@@ -22,6 +21,13 @@ const char index_html[] PROGMEM = R"rawliteral(
                 <span class="status-text" id="status-text">Connecting...</span>
             </span>
             <div class="timestamp" id="last-update">Last update: --</div>
+            <div class="nav-actions">
+                <span class="user-greeting">Welcome, <span id="user-name">User</span></span>
+                <button class="logout-btn" id="logout-btn" title="Logout">
+                    <span class="logout-icon">🚪</span>
+                    <span class="logout-text">Logout</span>
+                </button>
+            </div>
         </div>
     </nav>
 
@@ -152,7 +158,173 @@ const char index_html[] PROGMEM = R"rawliteral(
         </section>
     </main>
 
-    <script src="/script.js"></script>
+    <script>
+// Dashboard functionality
+let currentGateStatus = 'CLOSED';
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🔧 Dashboard loaded');
+    
+    // Initialize dashboard
+    initDashboard();
+    setupLogout();
+    setupGateToggle();
+    
+    // Start data updates
+    startDataFetching();
+});
+
+function initDashboard() {
+    updateConnectionStatus(true);
+    loadUserInfo();
+}
+
+async function loadUserInfo() {
+    try {
+        // For now, just set a default user name
+        document.getElementById('user-name').textContent = 'Admin';
+    } catch (error) {
+        console.error('Error loading user info:', error);
+    }
+}
+
+function setupLogout() {
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', async function() {
+            if (confirm('Are you sure you want to logout?')) {
+                try {
+                    window.location.href = '/login';
+                } catch (error) {
+                    console.log('Logout failed, redirecting anyway...');
+                    window.location.href = '/login';
+                }
+            }
+        });
+    }
+}
+
+function setupGateToggle() {
+    const gateToggle = document.getElementById('gate-toggle');
+    if (gateToggle) {
+        gateToggle.addEventListener('click', function() {
+            toggleGate();
+        });
+    }
+}
+
+function toggleGate() {
+    // Toggle the gate status
+    currentGateStatus = currentGateStatus === 'OPEN' ? 'CLOSED' : 'OPEN';
+    
+    // Update UI immediately
+    updateGateDisplay(currentGateStatus);
+    
+    console.log(`🚪 Gate toggled to: ${currentGateStatus}`);
+    
+    // You can add server communication here later
+    // fetch('/gate/toggle', { method: 'POST' });
+}
+
+function updateGateDisplay(status) {
+    const gateDisplay = document.getElementById('gate-display');
+    const gateIcon = document.getElementById('gate-icon');
+    const gateStatusEl = document.getElementById('gate-status');
+    
+    if (gateDisplay && gateIcon && gateStatusEl) {
+        if (status === 'OPEN') {
+            gateDisplay.classList.add('open');
+            gateDisplay.classList.remove('closed');
+            gateIcon.textContent = '🟢';
+            gateStatusEl.textContent = 'OPEN';
+        } else {
+            gateDisplay.classList.add('closed');
+            gateDisplay.classList.remove('open');
+            gateIcon.textContent = '🔴';
+            gateStatusEl.textContent = 'CLOSED';
+        }
+    }
+}
+
+function updateConnectionStatus(connected) {
+    const statusDot = document.getElementById('ws-status');
+    const statusText = document.getElementById('status-text');
+    
+    if (statusDot && statusText) {
+        if (connected) {
+            statusDot.classList.add('connected');
+            statusText.textContent = 'Online';
+        } else {
+            statusDot.classList.remove('connected');
+            statusText.textContent = 'Offline';
+        }
+    }
+}
+
+function startDataFetching() {
+    // Generate mock data every 2 seconds
+    setInterval(updateMockData, 2000);
+    updateMockData(); // Initial update
+}
+
+function updateMockData() {
+    // Update water level
+    const waterPercent = Math.floor(Math.random() * 60) + 30; // 30-90%
+    const rotation = (waterPercent / 100) * 180;
+    
+    const waterFill = document.getElementById('water-fill');
+    const waterPercentEl = document.getElementById('water-percent');
+    const waterRaw = document.getElementById('water-raw');
+    
+    if (waterFill) waterFill.style.transform = `rotate(${rotation}deg)`;
+    if (waterPercentEl) waterPercentEl.textContent = waterPercent;
+    if (waterRaw) waterRaw.textContent = `${(Math.random() * 1.5 + 1.5).toFixed(1)}m`;
+    
+    // Update environmental data
+    const temp = document.getElementById('temp-value');
+    const humidity = document.getElementById('humidity-value');
+    const light = document.getElementById('light-value');
+    
+    if (temp) temp.textContent = Math.floor(Math.random() * 8) + 25; // 25-32°C
+    if (humidity) humidity.textContent = Math.floor(Math.random() * 30) + 50; // 50-80%
+    if (light) light.textContent = Math.floor(Math.random() * 600) + 200; // 200-800 lux
+    
+    // Update rain sensor
+    const rainStatus = document.getElementById('rain-status');
+    const rainValue = document.getElementById('rain-value');
+    const rainRaw = document.getElementById('rain-raw');
+    const rainIndicator = document.getElementById('rain-indicator');
+    
+    const isRaining = Math.random() > 0.7;
+    
+    if (rainStatus) rainStatus.textContent = isRaining ? 'Rain Detected' : 'No Rain Detected';
+    if (rainValue) rainValue.textContent = isRaining ? Math.floor(Math.random() * 10) + 1 : 0;
+    if (rainRaw) rainRaw.textContent = Math.floor(Math.random() * 1024);
+    
+    if (rainIndicator) {
+        if (isRaining) {
+            rainIndicator.classList.add('raining');
+            rainIndicator.classList.remove('no-rain');
+        } else {
+            rainIndicator.classList.add('no-rain');
+            rainIndicator.classList.remove('raining');
+        }
+    }
+    
+    // Update timestamp
+    const lastUpdate = document.getElementById('last-update');
+    if (lastUpdate) {
+        lastUpdate.textContent = `Last update: ${new Date().toLocaleTimeString()}`;
+    }
+    
+    // Update alert message
+    const alertMessage = document.getElementById('alert-message');
+    const alertTime = document.getElementById('alert-time');
+    
+    if (alertMessage) alertMessage.textContent = 'All sensors operating normally';
+    if (alertTime) alertTime.textContent = 'Just now';
+}
+    </script>
 </body>
 </html>
 )rawliteral";
