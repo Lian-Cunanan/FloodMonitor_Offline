@@ -34,31 +34,31 @@ The **IoT Flood Monitor Pro** is a student-developed flood monitoring system des
 <table align="center">
   <tr>
     <td align="center">
-      <img src="profile_pictures/lian_cunanan.jpg" width="100px;" style="border-radius: 50%;" alt="Lian Cunanan"/><br />
+      <img src="profile_pictures/Lian.jpg" width="100px;" style="border-radius: 50%;" alt="Lian Cunanan"/><br />
       <sub><b>🚀 Lian Cunanan</b></sub><br />
       <sub>Lead Developer & System Architect</sub><br />
       <a href="https://github.com/Lian-Cunanan">GitHub</a> | 
       <a href="https://www.linkedin.com/in/lian-vince-cunanan-3930212a4/">LinkedIn</a>
     </td>
     <td align="center">
-      <img src="profile_pictures/ardyan_perez.jpg" width="100px;" style="border-radius: 50%;" alt="Ardyan Perez"/><br />
+      <img src="profile_pictures/ardyan.jpg" width="100px;" style="border-radius: 50%;" alt="Ardyan Perez"/><br />
       <sub><b>🔧 Ardyan Perez</b></sub><br />
       <sub>Hardware Engineer & IoT Specialist</sub>
     </td>
     <td align="center">
-      <img src="profile_pictures/kenneth_manarang.jpg" width="100px;" style="border-radius: 50%;" alt="Kenneth Manarang"/><br />
+      <img src="profile_pictures/kenneth.jpg" width="100px;" style="border-radius: 50%;" alt="Kenneth Manarang"/><br />
       <sub><b>💻 Kenneth Manarang</b></sub><br />
       <sub>Backend Developer & Database Engineer</sub>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="profile_pictures/aldrich_icat.jpg" width="100px;" style="border-radius: 50%;" alt="Aldrich Icat"/><br />
+      <img src="profile_pictures/aldrich.jpg" width="100px;" style="border-radius: 50%;" alt="Aldrich Icat"/><br />
       <sub><b>🎨 Aldrich Icat</b></sub><br />
       <sub>UI/UX Designer & Frontend Developer</sub>
     </td>
     <td align="center">
-      <img src="profile_pictures/charles_mirande.jpg" width="100px;" style="border-radius: 50%;" alt="Charles Mirande"/><br />
+      <img src="profile_pictures/Charles.png" width="100px;" style="border-radius: 50%;" alt="Charles Mirande"/><br />
       <sub><b>⚙️ Charles Mirande</b></sub><br />
       <sub>Systems Integrator & Testing</sub>
     </td>
