@@ -34,36 +34,36 @@ The **IoT Flood Monitor Pro** is a student-developed flood monitoring system des
 <table align="center">
   <tr>
     <td align="center">
-      <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face&auto=format" width="100px;" style="border-radius: 50%;" alt="Lian Cunanan"/><br />
+      <img src="profile_pictures/lian_cunanan.jpg" width="100px;" style="border-radius: 50%;" alt="Lian Cunanan"/><br />
       <sub><b>🚀 Lian Cunanan</b></sub><br />
       <sub>Lead Developer & System Architect</sub><br />
       <a href="https://github.com/Lian-Cunanan">GitHub</a> | 
       <a href="https://www.linkedin.com/in/lian-vince-cunanan-3930212a4/">LinkedIn</a>
     </td>
     <td align="center">
-      <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face&auto=format" width="100px;" style="border-radius: 50%;" alt="Ardyan Perez"/><br />
+      <img src="profile_pictures/ardyan_perez.jpg" width="100px;" style="border-radius: 50%;" alt="Ardyan Perez"/><br />
       <sub><b>🔧 Ardyan Perez</b></sub><br />
       <sub>Hardware Engineer & IoT Specialist</sub>
     </td>
     <td align="center">
-      <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&h=100&fit=crop&crop=face&auto=format" width="100px;" style="border-radius: 50%;" alt="Kenneth Manarang"/><br />
+      <img src="profile_pictures/kenneth_manarang.jpg" width="100px;" style="border-radius: 50%;" alt="Kenneth Manarang"/><br />
       <sub><b>💻 Kenneth Manarang</b></sub><br />
       <sub>Backend Developer & Database Engineer</sub>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100&h=100&fit=crop&crop=face&auto=format" width="100px;" style="border-radius: 50%;" alt="Aldrich Icat"/><br />
+      <img src="profile_pictures/aldrich_icat.jpg" width="100px;" style="border-radius: 50%;" alt="Aldrich Icat"/><br />
       <sub><b>🎨 Aldrich Icat</b></sub><br />
       <sub>UI/UX Designer & Frontend Developer</sub>
     </td>
     <td align="center">
-      <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face&auto=format" width="100px;" style="border-radius: 50%;" alt="Charles Mirande"/><br />
+      <img src="profile_pictures/charles_mirande.jpg" width="100px;" style="border-radius: 50%;" alt="Charles Mirande"/><br />
       <sub><b>⚙️ Charles Mirande</b></sub><br />
       <sub>Systems Integrator & Testing</sub>
     </td>
     <td align="center">
-      <img src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=100&h=100&fit=crop&crop=face&auto=format" width="100px;" style="border-radius: 50%;" alt="Team"/><br />
+      <img src="profile_pictures/team_collaboration.jpg" width="100px;" style="border-radius: 50%;" alt="Team"/><br />
       <sub><b>🤝 Collaborative Team</b></sub><br />
       <sub>Innovation & Learning</sub>
     </td>
