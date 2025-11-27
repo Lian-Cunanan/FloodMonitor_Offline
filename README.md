@@ -63,7 +63,7 @@ The **IoT Flood Monitor Pro** is a student-developed flood monitoring system des
       <sub>Systems Integrator & Testing</sub>
     </td>
     <td align="center">
-      <div style="width: 100px; height: 100px; border-radius: 50%; background: linear-gradient(135deg, #2563eb, #06b6d4); display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; margin: 0 auto 8px;">🤝</div>
+      <img src="https://via.placeholder.com/100x100/2563eb/ffffff?text=🤝" width="100px;" style="border-radius: 50%;" alt="Team Collaboration"/><br />
       <sub><b>🤝 Collaborative Team</b></sub><br />
       <sub>Innovation & Learning</sub>
     </td>
