@@ -63,7 +63,7 @@ The **IoT Flood Monitor Pro** is a student-developed flood monitoring system des
       <sub>Systems Integrator & Testing</sub>
     </td>
     <td align="center">
-      <img src="https://via.placeholder.com/100x100/2563eb/ffffff?text=🤝" width="100px;" style="border-radius: 50%;" alt="Team Collaboration"/><br />
+      <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=100&h=100&fit=crop&crop=faces&auto=format" width="100px;" style="border-radius: 50%;" alt="Team Collaboration"/><br />
       <sub><b>🤝 Collaborative Team</b></sub><br />
       <sub>Innovation & Learning</sub>
     </td>
@@ -162,33 +162,94 @@ graph TB
 
 ### 🔄 **Data Flow Architecture**
 
-```
-┌─────────────────┐    ┌──────────────┐    ┌─────────────────┐
-│   Sensors       │───▶│    ESP32     │───▶│  Web Dashboard  │
-│                 │    │              │    │                 │
-│ • Water Level   │    │ • WiFi       │    │ • Real-time UI  │
-│ • Temperature   │    │ • Web Server │    │ • Controls      │
-│ • Humidity      │    │ • SQLite     │    │ • User Login    │
-│ • Rain (Opt.)   │    │ • Data Logger│    │ • Monitoring    │
-│ • Light (Opt.)  │    │ • Auth System│    │ • Analytics     │
-└─────────────────┘    └──────────────┘    └─────────────────┘
-                              │
-                              ▼
-                    ┌──────────────────┐
-                    │   Flood Gate     │
-                    │   (Servo Motor)  │
-                    └──────────────────┘
+```mermaid
+graph LR
+    subgraph "Sensor Layer"
+        A[🌊 Water Level<br/>HC-SR04]
+        B[🌡️ Temperature<br/>DHT22]
+        C[🌧️ Rain Sensor<br/>YL-83]
+        D[💡 Light Sensor<br/>LDR]
+    end
+    
+    subgraph "Processing Layer"
+        E[🔧 ESP32<br/>Controller]
+        F[📊 Data Processing]
+        G[🗄️ SQLite<br/>Database]
+    end
+    
+    subgraph "Presentation Layer"
+        H[📱 Web Dashboard]
+        I[🔐 Authentication]
+        J[📈 Analytics]
+    end
+    
+    subgraph "Control Layer"
+        K[🚪 Flood Gate<br/>Servo Motor]
+        L[⚡ Auto Control]
+    end
+    
+    A --> E
+    B --> E
+    C --> E
+    D --> E
+    
+    E --> F
+    F --> G
+    F --> H
+    G --> I
+    H --> J
+    
+    F --> L
+    L --> K
+    
+    style E fill:#2563eb,stroke:#1d4ed8,stroke-width:3px,color:#fff
+    style H fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff
+    style G fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#fff
+    style K fill:#ef4444,stroke:#dc2626,stroke-width:2px,color:#fff
 ```
 
 ### 🌐 **Network Architecture**
 
-```
-Internet ←→ Router ←→ ESP32 ←→ Sensors
-    ↑           ↑        ↑        ↑
-    │           │        │        └─ DHT22, HC-SR04, etc.
-    │           │        └─ Web Server (Port 80)
-    │           └─ 2.4GHz WiFi
-    └─ Remote Access via Browser
+```mermaid
+graph TB
+    subgraph "Internet Layer"
+        A[🌐 Internet]
+        B[📡 Router/WiFi]
+    end
+    
+    subgraph "Device Layer"
+        C[🔧 ESP32 Device]
+        D[⚡ Web Server Port 80]
+    end
+    
+    subgraph "Sensor Network"
+        E[🌊 Water Level Sensor]
+        F[🌡️ Temperature Sensor]
+        G[🌧️ Rain Detection]
+        H[💡 Light Monitoring]
+    end
+    
+    subgraph "Client Access"
+        I[💻 Desktop Browser]
+        J[📱 Mobile Browser]
+        K[🖥️ Tablet Interface]
+    end
+    
+    A -.-> B
+    B -.-> C
+    C --> D
+    
+    E --> C
+    F --> C
+    G --> C
+    H --> C
+    
+    D -.-> I
+    D -.-> J
+    D -.-> K
+    
+    style C fill:#2563eb,stroke:#1d4ed8,stroke-width:3px,color:#fff
+    style D fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff
 ```
 
 ## 🔧 **Hardware Requirements**
@@ -202,9 +263,9 @@ Internet ←→ Router ←→ ESP32 ←→ Sensors
 | **🌡️ DHT Sensor** | DHT22 or DHT11 | 1 | ✅ Required |
 | **⚙️ Servo Motor** | SG90 Micro Servo | 1 | ✅ Required |
 | **🔋 Power Supply** | 5V 2A adapter | 1 | ✅ Required |
-| **🌧️ Rain Sensor** | YL-83 (optional) | 1 | 🔶 Optional |
-| **💡 Light Sensor** | LDR (optional) | 1 | 🔶 Optional |
-| **📡 WiFi Network** | 2.4GHz | 1 | ✅ Required |
+| **🌧️ Rain Sensor** | YL-83 or compatible | 1 | ✅ Required |
+| **💡 Light Sensor** | LDR + 10kΩ resistor | 1 | ✅ Required |
+| **📡 WiFi Network** | 2.4GHz compatible | 1 | ✅ Required |
 
 </div>
 
