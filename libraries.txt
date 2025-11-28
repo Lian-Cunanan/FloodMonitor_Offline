@@ -1,8 +1,8 @@
 Arduino IDE Library Manager - Install these libraries:
 
 Required Libraries:
-- "ESPAsyncWebServer" by lacamera
-- "AsyncTCP" by dvarrel  
+- "ESPAsyncWebServer" by me-no-dev
+- "AsyncTCP" by me-no-dev  
 - "ArduinoJson" by Benoit Blanchon
 
 Sensor Libraries (choose based on your sensors):
@@ -14,6 +14,12 @@ Sensor Libraries (choose based on your sensors):
 Optional Libraries:
 - "NTPClient" by Fabrice Weinberg
 - "PubSubClient" by Nick O'Leary
+
+ESP32-specific Libraries (Required):
+- "ESP Async WebServer" by me-no-dev
+- "AsyncTCP" by me-no-dev
+- "ArduinoJson" by Benoit Blanchon
+- "sqlite3" by Richard T. Hatch (for ESP32)
 
 Installation Instructions:
 1. Open Arduino IDE
