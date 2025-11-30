@@ -271,19 +271,92 @@ graph TB
 
 ### 🔌 **Pin Configuration**
 
+<div align="center">
+
+#### **ESP32 DevKit V1 Wiring Diagram**
+
 ```
-ESP32 Wiring Guide:
-┌─────────────────────┐
-│      ESP32          │
-├─────────────────────┤
-│ GPIO 5  → HC-SR04 Trig
-│ GPIO 18 → HC-SR04 Echo  
-│ GPIO 4  → DHT22 Data
-│ GPIO 2  → Servo Signal
-│ 3.3V    → DHT22 VCC
-│ 5V      → HC-SR04/Servo VCC
-│ GND     → Common Ground
-└─────────────────────┘
+                    ┌─────────────────────────────────┐
+                    │         ESP32 DevKit V1         │
+                    │                                 │
+       ┌────────────┤ 🔌 Power & Ground              │
+       │            ├─────────────────────────────────┤
+       │      3.3V ─┤ ⚡ 3.3V  ── DHT22 VCC          │
+       │        5V ─┤ ⚡ 5V    ── HC-SR04 VCC        │
+       │       GND ─┤ ⚪ GND   ── Common Ground       │
+       │            │                                 │
+       │            ├─────────────────────────────────┤
+       │            │ 📡 Digital GPIO Pins           │
+  ┌────┴─────┐      ├─────────────────────────────────┤
+  │ Sensors  │      │                                 │
+  │          │ GPIO2─┤ 🔴 D2    ── Servo Signal       │
+  │ 🌊 Water │ GPIO4─┤ 🟢 D4    ── DHT22 Data        │
+  │ 🌡️ Temp  │ GPIO5─┤ 🔵 D5    ── HC-SR04 Trigger   │
+  │ 💧 Humid │GPIO18─┤ 🟡 D18   ── HC-SR04 Echo      │
+  │ 🌧️ Rain  │GPIO34─┤ 🟠 A2    ── Rain Sensor       │
+  │ 💡 Light │GPIO35─┤ 🟣 A3    ── LDR Light Sensor  │
+  └──────────┘      │                                 │
+                    └─────────────────────────────────┘
+```
+
+#### **Detailed Connection Table**
+
+| 🎯 Component | 📍 ESP32 Pin | 🔗 Connection Type | ⚡ Power | 📝 Notes |
+|-------------|-------------|------------------|---------|----------|
+| **🌊 HC-SR04** | | | | **Ultrasonic Distance** |
+| └ VCC | 5V Rail | Power | 5V | High power requirement |
+| └ GND | GND | Ground | 0V | Common ground |
+| └ Trig | GPIO 5 | Digital Output | 3.3V | Trigger pulse |
+| └ Echo | GPIO 18 | Digital Input | 3.3V | Distance measurement |
+| **🌡️ DHT22** | | | | **Temperature & Humidity** |
+| └ VCC | 3.3V | Power | 3.3V | Low power sensor |
+| └ GND | GND | Ground | 0V | Common ground |
+| └ Data | GPIO 4 | Digital I/O | 3.3V | One-wire protocol |
+| **⚙️ SG90 Servo** | | | | **Flood Gate Control** |
+| └ VCC | 5V Rail | Power | 5V | Motor power |
+| └ GND | GND | Ground | 0V | Common ground |
+| └ Signal | GPIO 2 | PWM Output | 3.3V | Position control |
+| **🌧️ Rain Sensor** | | | | **Precipitation Detection** |
+| └ VCC | 3.3V | Power | 3.3V | Sensor power |
+| └ GND | GND | Ground | 0V | Common ground |
+| └ AO | GPIO 34 | Analog Input | 0-3.3V | Moisture level |
+| **💡 LDR Sensor** | | | | **Light Monitoring** |
+| └ Signal | GPIO 35 | Analog Input | 0-3.3V | Light intensity |
+| └ 10kΩ Resistor | GND | Pull-down | - | Voltage divider |
+
+</div>
+
+#### **🔧 Wiring Best Practices**
+
+<div align="center">
+
+| ⚠️ **Safety Guidelines** | ✅ **Best Practices** |
+|------------------------|---------------------|
+| 🔴 **Power Off** before wiring | 🟢 **Double-check** all connections |
+| ⚡ **5V Rail** for high-power devices | 🔵 **3.3V Logic** for data signals |
+| 🌍 **Common Ground** for all components | 📏 **Short Wires** to reduce interference |
+| 🔌 **Separate Power** for servo motor | 🛡️ **Use Breadboard** for prototyping |
+
+</div>
+
+#### **📊 Power Consumption Analysis**
+
+```
+Total System Power Requirements:
+┌─────────────────────────────────────┐
+│  Component    │ Voltage │ Current   │
+├─────────────────────────────────────┤
+│  🔧 ESP32     │  3.3V   │  240mA    │
+│  🌊 HC-SR04   │  5.0V   │   15mA    │
+│  🌡️ DHT22     │  3.3V   │   2.5mA   │
+│  ⚙️ SG90      │  5.0V   │  100-600mA │
+│  🌧️ Rain      │  3.3V   │   20mA    │
+│  💡 LDR       │  3.3V   │   0.1mA   │
+├─────────────────────────────────────┤
+│  💡 Total Max │  5.0V   │  ~900mA   │
+└─────────────────────────────────────┘
+
+Recommended: 5V 2A Power Supply
 ```
 
 ## 💻 **Required Libraries**
