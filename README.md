@@ -127,35 +127,150 @@ The **IoT Flood Monitor Pro** is a complete, production-ready flood monitoring s
 </tr>
 </table>
 
-## 🏗️ **System Architecture**
+## 🏗️ **System Architecture Overview**
 
-```
-┌─────────────────┐    ┌──────────────┐    ┌─────────────────┐
-│   Sensors       │───▶│    ESP32     │───▶│  Web Dashboard  │
-│                 │    │              │    │                 │
-│ • Water Level   │    │ • WiFi       │    │ • Real-time UI  │
-│ • Temperature   │    │ • Web Server │    │ • Controls      │
-│ • Humidity      │    │ • SQLite     │    │ • User Login    │
-│ • Rain (Opt.)   │    │ • Data Logger│    │ • Monitoring    │
-│ • Light (Opt.)  │    │ • Auth System│    │ • Analytics     │
-└─────────────────┘    └──────────────┘    └─────────────────┘
-                              │
-                              ▼
-                    ┌──────────────────┐
-                    │   Flood Gate     │
-                    │   (Servo Motor)  │
-                    └──────────────────┘
+### 🔄 **Main System Flow**
+
+```mermaid
+graph TB
+    subgraph "🌊 Sensor Layer"
+        A[💧 Water Level<br/>HC-SR04]
+        B[🌡️ Temperature<br/>DHT22]
+        C[💨 Humidity<br/>DHT22]
+        D[🌧️ Rain Detection<br/>YL-83]
+        E[💡 Light Sensor<br/>LDR]
+    end
+    
+    subgraph "🔧 Processing Core"
+        F[ESP32 Controller<br/>Dual Core 240MHz]
+        G[📊 Data Processing<br/>Real-time Analysis]
+        H[🗄️ SQLite Database<br/>Persistent Storage]
+    end
+    
+    subgraph "🌐 Web Interface"
+        I[📱 Dashboard UI<br/>Responsive Design]
+        J[🔐 Authentication<br/>Secure Login]
+        K[📊 Live Monitoring<br/>Real-time Updates]
+    end
+    
+    subgraph "⚙️ Control Systems"
+        L[🚪 Flood Gate<br/>Servo Control]
+        M[🔄 Automation<br/>Smart Logic]
+        N[📝 Activity Logs<br/>Complete Audit]
+    end
+    
+    A --> F
+    B --> F
+    C --> F
+    D --> F
+    E --> F
+    
+    F --> G
+    G --> H
+    G --> I
+    I --> J
+    I --> K
+    
+    G --> M
+    M --> L
+    F --> N
+    J --> N
+    
+    style F fill:#2563eb,stroke:#1d4ed8,stroke-width:3px,color:#fff
+    style I fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff
+    style H fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#fff
+    style L fill:#ef4444,stroke:#dc2626,stroke-width:2px,color:#fff
 ```
 
-### 🌐 **Network Architecture**
+### 📡 **Data Flow Architecture**
 
+```mermaid
+graph LR
+    subgraph "📊 Input Layer"
+        S1[🌊 Water Level]
+        S2[🌡️ Temperature]
+        S3[💨 Humidity]
+        S4[🌧️ Rain Status]
+        S5[💡 Light Level]
+    end
+    
+    subgraph "🔧 Processing Pipeline"
+        P1[📥 Data Acquisition]
+        P2[🔍 Validation & Filtering]
+        P3[📊 Real-time Processing]
+        P4[💾 Database Storage]
+    end
+    
+    subgraph "🌐 Output Systems"
+        O1[📱 Live Dashboard]
+        O2[🔐 User Interface]
+        O3[⚙️ Control Commands]
+        O4[📝 Activity Logs]
+    end
+    
+    S1 --> P1
+    S2 --> P1
+    S3 --> P1
+    S4 --> P1
+    S5 --> P1
+    
+    P1 --> P2
+    P2 --> P3
+    P3 --> P4
+    
+    P3 --> O1
+    P4 --> O2
+    P3 --> O3
+    P2 --> O4
+    
+    style P1 fill:#3b82f6,stroke:#2563eb,stroke-width:2px,color:#fff
+    style P3 fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff
+    style O1 fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#fff
 ```
-Internet ←→ Router ←→ ESP32 ←→ Sensors
-    ↑           ↑        ↑        ↑
-    │           │        │        └─ DHT22, HC-SR04, etc.
-    │           │        └─ Web Server (Port 80)
-    │           └─ 2.4GHz WiFi
-    └─ Remote Access via Browser
+
+### 🌐 **Network & Security Architecture**
+
+```mermaid
+graph TB
+    subgraph "🌍 External Network"
+        INT[🌐 Internet]
+        RTR[📡 WiFi Router<br/>2.4GHz Network]
+    end
+    
+    subgraph "🏠 Local Network"
+        ESP[🔧 ESP32 Device<br/>192.168.x.x]
+        SRV[⚡ Web Server<br/>Port 80]
+        DB[(🗄️ SQLite DB<br/>Local Storage)]
+    end
+    
+    subgraph "👥 Client Access"
+        DSK[💻 Desktop Browser<br/>Full Interface]
+        MOB[📱 Mobile Browser<br/>Responsive UI]
+        TAB[🖥️ Tablet Interface<br/>Touch Optimized]
+    end
+    
+    subgraph "🛡️ Security Layer"
+        AUTH[🔐 Authentication<br/>bcrypt + Sessions]
+        CSRF[🛡️ CSRF Protection<br/>Token Validation]
+        SQL[💾 SQL Security<br/>Parameterized Queries]
+    end
+    
+    INT -.-> RTR
+    RTR -.-> ESP
+    ESP --> SRV
+    SRV --> DB
+    
+    SRV -.-> DSK
+    SRV -.-> MOB
+    SRV -.-> TAB
+    
+    SRV --> AUTH
+    AUTH --> CSRF
+    CSRF --> SQL
+    
+    style ESP fill:#2563eb,stroke:#1d4ed8,stroke-width:3px,color:#fff
+    style SRV fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff
+    style AUTH fill:#ef4444,stroke:#dc2626,stroke-width:2px,color:#fff
 ```
 
 ## 🔧 **Hardware Requirements**
