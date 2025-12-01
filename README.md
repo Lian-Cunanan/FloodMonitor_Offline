@@ -20,6 +20,64 @@
 
 The **IoT Flood Monitor Pro** is a complete, production-ready flood monitoring solution featuring a professional web dashboard, secure user authentication, comprehensive logging system, and automated flood control. Built with modern web technologies and enterprise-grade security for both educational and commercial deployment.
 
+## 👥 **Development Team**
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="profile_pictures/Lian.jpg" width="100px;" style="border-radius: 50%;" alt="Lian Cunanan"/><br />
+      <sub><b>🚀 Lian Cunanan</b></sub><br />
+      <sub>Lead Developer & System Architect</sub><br />
+      <a href="https://github.com/Lian-Cunanan">GitHub</a> | 
+      <a href="https://www.linkedin.com/in/lian-vince-cunanan-3930212a4/">LinkedIn</a>
+    </td>
+    <td align="center">
+      <img src="profile_pictures/ardyan.jpg" width="100px;" style="border-radius: 50%;" alt="Ardyan Perez"/><br />
+      <sub><b>🔧 Ardyan Perez</b></sub><br />
+      <sub>Hardware Engineer & IoT Specialist</sub>
+    </td>
+    <td align="center">
+      <img src="profile_pictures/kenneth.jpg" width="100px;" style="border-radius: 50%;" alt="Kenneth Manarang"/><br />
+      <sub><b>💻 Kenneth Manarang</b></sub><br />
+      <sub>Backend Developer & Database Engineer</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="profile_pictures/aldrich.jpg" width="100px;" style="border-radius: 50%;" alt="Aldrich Icat"/><br />
+      <sub><b>🎨 Aldrich Icat</b></sub><br />
+      <sub>UI/UX Designer & Frontend Developer</sub>
+    </td>
+    <td align="center">
+      <img src="profile_pictures/Charles.png" width="100px;" style="border-radius: 50%;" alt="Charles Mirande"/><br />
+      <sub><b>⚙️ Charles Mirande</b></sub><br />
+      <sub>Systems Integrator & Testing</sub>
+    </td>
+    <td align="center">
+      <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=100&h=100&fit=crop&crop=faces&auto=format" width="100px;" style="border-radius: 50%;" alt="Team Collaboration"/><br />
+      <sub><b>🤝 Collaborative Team</b></sub><br />
+      <sub>Innovation & Learning</sub>
+    </td>
+  </tr>
+</table>
+
+## 📸 **Project Screenshots**
+
+<div align="center">
+
+### 🖥️ **Web Dashboard**
+*Clean and intuitive monitoring interface*
+
+### 📱 **Mobile Responsive**
+*Accessible on all devices*
+
+### 🔐 **Login System**
+*Secure user authentication*
+
+> **Note:** This is a professional project showcasing IoT and web development skills. Interface screenshots available upon request.
+
+</div>
+
 ## 🌟 **Key Highlights**
 
 <div align="center">
