@@ -138,118 +138,33 @@ The **IoT Flood Monitor Pro** is a student-developed flood monitoring system des
 
 ## 🏗️ **System Architecture**
 
-```mermaid
-graph TB
-    A[🌊 Water Level Sensor] --> E[🔧 ESP32 Controller]
-    B[🌡️ Temperature/Humidity] --> E
-    C[🌧️ Rain Sensor] --> E
-    D[💡 Light Sensor] --> E
-    
-    E --> F[📊 Real-time Dashboard]
-    E --> G[🗄️ SQLite Database]
-    E --> H[🚪 Flood Gate Control]
-    
-    F --> I[📱 Mobile Interface]
-    F --> J[🖥️ Desktop Interface]
-    
-    G --> K[👥 User Management]
-    G --> L[📈 Data Analytics]
-    
-    style E fill:#2563eb,stroke:#1d4ed8,stroke-width:3px,color:#fff
-    style F fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff
-    style G fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#fff
 ```
-
-### 🔄 **Data Flow Architecture**
-
-```mermaid
-graph LR
-    subgraph "Sensor Layer"
-        A[🌊 Water Level<br/>HC-SR04]
-        B[🌡️ Temperature<br/>DHT22]
-        C[🌧️ Rain Sensor<br/>YL-83]
-        D[💡 Light Sensor<br/>LDR]
-    end
-    
-    subgraph "Processing Layer"
-        E[🔧 ESP32<br/>Controller]
-        F[📊 Data Processing]
-        G[🗄️ SQLite<br/>Database]
-    end
-    
-    subgraph "Presentation Layer"
-        H[📱 Web Dashboard]
-        I[🔐 Authentication]
-        J[📈 Analytics]
-    end
-    
-    subgraph "Control Layer"
-        K[🚪 Flood Gate<br/>Servo Motor]
-        L[⚡ Auto Control]
-    end
-    
-    A --> E
-    B --> E
-    C --> E
-    D --> E
-    
-    E --> F
-    F --> G
-    F --> H
-    G --> I
-    H --> J
-    
-    F --> L
-    L --> K
-    
-    style E fill:#2563eb,stroke:#1d4ed8,stroke-width:3px,color:#fff
-    style H fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff
-    style G fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#fff
-    style K fill:#ef4444,stroke:#dc2626,stroke-width:2px,color:#fff
+┌─────────────────┐    ┌──────────────┐    ┌─────────────────┐
+│   Sensors       │───▶│    ESP32     │───▶│  Web Dashboard  │
+│                 │    │              │    │                 │
+│ • Water Level   │    │ • WiFi       │    │ • Real-time UI  │
+│ • Temperature   │    │ • Web Server │    │ • Controls      │
+│ • Humidity      │    │ • SQLite     │    │ • User Login    │
+│ • Rain (Opt.)   │    │ • Data Logger│    │ • Monitoring    │
+│ • Light (Opt.)  │    │ • Auth System│    │ • Analytics     │
+└─────────────────┘    └──────────────┘    └─────────────────┘
+                              │
+                              ▼
+                    ┌──────────────────┐
+                    │   Flood Gate     │
+                    │   (Servo Motor)  │
+                    └──────────────────┘
 ```
 
 ### 🌐 **Network Architecture**
 
-```mermaid
-graph TB
-    subgraph "Internet Layer"
-        A[🌐 Internet]
-        B[📡 Router/WiFi]
-    end
-    
-    subgraph "Device Layer"
-        C[🔧 ESP32 Device]
-        D[⚡ Web Server Port 80]
-    end
-    
-    subgraph "Sensor Network"
-        E[🌊 Water Level Sensor]
-        F[🌡️ Temperature Sensor]
-        G[🌧️ Rain Detection]
-        H[💡 Light Monitoring]
-    end
-    
-    subgraph "Client Access"
-        I[💻 Desktop Browser]
-        J[📱 Mobile Browser]
-        K[🖥️ Tablet Interface]
-    end
-    
-    A -.-> B
-    B -.-> C
-    C --> D
-    
-    E --> C
-    F --> C
-    G --> C
-    H --> C
-    
-    D -.-> I
-    D -.-> J
-    D -.-> K
-    
-    style C fill:#2563eb,stroke:#1d4ed8,stroke-width:3px,color:#fff
-    style D fill:#10b981,stroke:#059669,stroke-width:2px,color:#fff
+```
+Internet ←→ Router ←→ ESP32 ←→ Sensors
+    ↑           ↑        ↑        ↑
+    │           │        │        └─ DHT22, HC-SR04, etc.
+    │           │        └─ Web Server (Port 80)
+    │           └─ 2.4GHz WiFi
+    └─ Remote Access via Browser
 ```
 
 ## 🔧 **Hardware Requirements**
