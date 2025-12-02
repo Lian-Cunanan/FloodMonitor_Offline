@@ -277,15 +277,16 @@ graph TB
 
 <div align="center">
 
-| 🎯 **Component** | 📏 **Specifications** | 🔌 **Power Requirements** | 💰 **Estimated Cost** |
-|------------------|----------------------|---------------------------|---------------------|
-| **ESP32 DevKit V1** | 38-pin, dual-core 240MHz | 3.3V @ 240mA | $8-12 USD |
-| **HC-SR04 Ultrasonic** | 2-400cm range, ±3mm accuracy | 5V @ 15mA | $2-4 USD |
-| **DHT22 Sensor** | -40°C to 80°C, 0-100% RH | 3.3V @ 2.5mA | $3-5 USD |
-| **SG90 Servo Motor** | 180° rotation, 1.5kg torque | 5V @ 100-600mA | $2-4 USD |
-| **YL-83 Rain Sensor** | Analog + digital output | 3.3V @ 20mA | $1-3 USD |
-| **LDR + Resistor** | Light-dependent resistor | 3.3V @ 0.1mA | $1-2 USD |
-| **Power Supply** | 5V 2A adapter | AC input | $5-8 USD |
+| 🎯 **Component** | 📏 **Specifications** | 🔌 **Power Requirements** | 💰 **Estimated Cost (PHP)** |
+|------------------|----------------------|---------------------------|------------------------------|
+| **ESP32 DevKit V1** | 38-pin, dual-core 240MHz | 3.3V @ 240mA | ₱400-600 |
+| **HC-SR04 Ultrasonic** | 2-400cm range, ±3mm accuracy | 5V @ 15mA | ₱100-200 |
+| **DHT22 Sensor** | -40°C to 80°C, 0-100% RH | 3.3V @ 2.5mA | ₱150-250 |
+| **SG90 Servo Motor** | 180° rotation, 1.5kg torque | 5V @ 100-600mA | ₱100-200 |
+| **YL-83 Rain Sensor** | Analog + digital output | 3.3V @ 20mA | ₱50-150 |
+| **LDR + Resistor** | Light-dependent resistor | 3.3V @ 0.1mA | ₱30-100 |
+| **Power Supply** | 5V 2A adapter | AC input | ₱250-400 |
+| **📊 Total System Cost** | **Complete IoT Solution** | **Full Setup** | **₱1,080-1,900** |
 
 </div>
 
@@ -316,34 +317,107 @@ graph TB
 
 </div>
 
-### 📚 **Required Libraries Matrix**
+### 📚 **Arduino IDE Library Installation Guide**
 
 <div align="center">
+
+#### **Required Core Libraries**
 
 | 📦 **Library Name** | 👨‍💻 **Author** | 🎯 **Purpose** | ⭐ **Priority** |
 |--------------------|----------------|----------------|----------------|
-| **ESPAsyncWebServer** | me-no-dev | Web server functionality | Critical |
-| **AsyncTCP** | me-no-dev | Asynchronous networking | Critical |
+| **ESPAsyncWebServer** | lacamera | Web server functionality | Critical |
+| **AsyncTCP** | dvarrel | Asynchronous networking | Critical |
 | **ArduinoJson** | Benoit Blanchon | JSON data handling | Essential |
-| **DHT Sensor Library** | Adafruit | Temperature/humidity | Essential |
-| **NewPing** | Tim Eckel | Ultrasonic sensor | Essential |
-| **ESP32Servo** | Kevin Harrington | Servo motor control | Essential |
-| **SQLite3** | Richard T. Hatch | Database functionality | Optional |
+
+#### **Sensor Libraries (Choose Based on Your Sensors)**
+
+| 📡 **Library Name** | 👨‍💻 **Author** | 🔧 **Compatible Sensors** | 🎯 **Usage** |
+|--------------------|----------------|---------------------------|-------------|
+| **OneWire** | Paul Stoffregen | DS18B20, DS2438 | Temperature sensors |
+| **DallasTemperature** | Miles Burton | DS18B20 family | Digital thermometers |
+| **NewPing** | Tim Eckel | HC-SR04, US-100 | Ultrasonic distance |
+| **ServoESP32** | Jaroslav Paral | SG90, MG996R | Servo motor control |
+
+#### **Optional Enhancement Libraries**
+
+| 🌐 **Library Name** | 👨‍💻 **Author** | 📊 **Features** | 🚀 **Benefits** |
+|--------------------|----------------|----------------|----------------|
+| **NTPClient** | Fabrice Weinberg | Network time sync | Accurate timestamps |
+| **PubSubClient** | Nick O'Leary | MQTT communication | IoT cloud integration |
 
 </div>
 
-### 🌐 **Network Configuration Options**
+### 🛠️ **Step-by-Step Installation Instructions**
 
 <div align="center">
 
-| 🔧 **Configuration Method** | 🎯 **Use Case** | 🛡️ **Security Level** | 📱 **User Experience** |
-|----------------------------|----------------|----------------------|----------------------|
-| **WiFi Credentials in Code** | Development/Testing | Basic | Simple setup |
-| **WiFiManager Library** | Production Deployment | Enhanced | User-friendly portal |
-| **Access Point Fallback** | Network Issues | Secure | Automatic recovery |
-| **mDNS Discovery** | Easy Access | Standard | floodmonitor.local |
+| 📋 **Step** | 🔧 **Action** | 📝 **Details** |
+|-------------|---------------|----------------|
+| **1** | Open Arduino IDE | Launch Arduino IDE 2.0+ |
+| **2** | Access Library Manager | Go to **Sketch → Include Library → Manage Libraries** |
+| **3** | Search Libraries | Search for each library name listed above |
+| **4** | Install by Author | Select the correct library by the specified author |
+| **5** | Restart IDE | Close and restart Arduino IDE after installation |
 
 </div>
+
+#### **Manual GitHub Installation**
+
+For libraries not found in Library Manager:
+
+<div align="center">
+
+| 📦 **Library** | 🔗 **GitHub Repository** | 📁 **Installation Path** |
+|---------------|-------------------------|-------------------------|
+| **ESPAsyncWebServer** | `https://github.com/me-no-dev/ESPAsyncWebServer` | `Arduino/libraries/ESPAsyncWebServer/` |
+| **AsyncTCP** | `https://github.com/me-no-dev/AsyncTCP` | `Arduino/libraries/AsyncTCP/` |
+
+</div>
+
+**Manual Installation Steps:**
+1. Download ZIP file from GitHub repository
+2. Extract to `Arduino/libraries/` folder
+3. Restart Arduino IDE
+4. Verify installation in **Sketch → Include Library**
+
+### 🔗 **Alternative Installation Methods**
+
+#### **Built-in ESP32 Libraries**
+
+These libraries come pre-installed with the ESP32 board package:
+
+<div align="center">
+
+| 🔧 **Library** | 📊 **Purpose** | 🎯 **Usage in Project** |
+|---------------|----------------|----------------------|
+| **WiFi** | Network connectivity | Internet connection management |
+| **WebServer** | HTTP server functions | Alternative to AsyncWebServer |
+| **SPIFFS** | File system storage | Web files and configuration |
+| **FS** | File system operations | File read/write operations |
+| **Update** | OTA firmware updates | Remote code deployment |
+| **Preferences** | Non-volatile storage | Settings and configuration |
+
+</div>
+
+### ✅ **Library Verification Checklist**
+
+After installation, verify these libraries appear in your Arduino IDE:
+
+```cpp
+// Include test - Add to a new sketch to verify installation
+#include <WiFi.h>              // ✅ Built-in ESP32
+#include <ESPAsyncWebServer.h>  // ✅ Manual install required
+#include <AsyncTCP.h>           // ✅ Manual install required  
+#include <ArduinoJson.h>        // ✅ Library Manager
+#include <NewPing.h>           // ✅ Library Manager (optional)
+#include <ESP32Servo.h>        // ✅ Library Manager (for servo)
+```
+
+**🔍 Troubleshooting Library Issues:**
+- **Library not found**: Check spelling and author name
+- **Compilation errors**: Verify library compatibility with ESP32
+- **Version conflicts**: Update to latest stable versions
+- **Include errors**: Check library installation path
 
 ## 📱 **User Interface Features**
 
