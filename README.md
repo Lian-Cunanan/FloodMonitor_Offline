@@ -277,16 +277,16 @@ graph TB
 
 <div align="center">
 
-| 🎯 **Component** | 📏 **Specifications** | 🔌 **Power Requirements** | 💰 **Estimated Cost (PHP)** |
-|------------------|----------------------|---------------------------|------------------------------|
-| **ESP32 DevKit V1** | 38-pin, dual-core 240MHz | 3.3V @ 240mA | ₱400-600 |
-| **HC-SR04 Ultrasonic** | 2-400cm range, ±3mm accuracy | 5V @ 15mA | ₱100-200 |
-| **DHT22 Sensor** | -40°C to 80°C, 0-100% RH | 3.3V @ 2.5mA | ₱150-250 |
-| **SG90 Servo Motor** | 180° rotation, 1.5kg torque | 5V @ 100-600mA | ₱100-200 |
-| **YL-83 Rain Sensor** | Analog + digital output | 3.3V @ 20mA | ₱50-150 |
-| **LDR + Resistor** | Light-dependent resistor | 3.3V @ 0.1mA | ₱30-100 |
-| **Power Supply** | 5V 2A adapter | AC input | ₱250-400 |
-| **📊 Total System Cost** | **Complete IoT Solution** | **Full Setup** | **₱1,080-1,900** |
+| 🎯 **Component** | 📏 **Specifications** | 🔌 **Power Requirements** | 📝 **Notes** |
+|------------------|----------------------|---------------------------|---------------|
+| **ESP32 DevKit V1** | 38-pin, dual-core 240MHz | 3.3V @ 240mA | Main microcontroller |
+| **HC-SR04 Ultrasonic** | 2-400cm range, ±3mm accuracy | 5V @ 15mA | Water level detection |
+| **DHT22 Sensor** | -40°C to 80°C, 0-100% RH | 3.3V @ 2.5mA | Temperature & humidity |
+| **SG90 Servo Motor** | 180° rotation, 1.5kg torque | 5V @ 100-600mA | Flood gate control |
+| **YL-83 Rain Sensor** | Analog + digital output | 3.3V @ 20mA | Rain detection |
+| **LDR + Resistor** | Light-dependent resistor | 3.3V @ 0.1mA | Light monitoring |
+| **Power Supply** | 5V 2A adapter | AC input | System power |
+| **Breadboard & Wires** | Standard breadboard | - | Connections |
 
 </div>
 

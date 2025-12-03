@@ -2,329 +2,286 @@
 
 const char index_html[] PROGMEM = R"rawliteral(
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IoT Flood Monitoring System</title>
-    <link rel="stylesheet" href="/style.css">
+  <title>Flood Monitoring</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-brand">
-            <span class="nav-icon">🌊</span>
-            <h1>Flood Monitor Pro</h1>
+  <div class="header">
+    <div>
+      <h1>Flood Monitor</h1>
+      <small>Mode: <span id="sys-mode" style="font-weight:bold; color:#0056b3;">LOADING...</span></small>
+      <small>User: <span id="current-user" style="font-weight:bold; color:#0056b3;">Loading...</span></small>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <button class="logout-btn" onclick="logout()">Logout</button>
+      <div class="status-dot" id="ws-status"></div>
+    </div>
+  </div>
+
+  <div class="grid-container">
+    <div style="grid-column: 1 / -1; text-align: right;">
+        <button class="qr-btn" onclick="toggleQR()">&#128241; WiFi Info</button>
+        <button class="qr-btn" onclick="downloadData()">&#128190; Download Data</button>
+        <button class="qr-btn" onclick="viewDatabase()">&#128248; System Status</button>
+        <button class="qr-btn" onclick="factoryReset()">&#128295; Factory Reset</button>
+    </div>
+
+    <div class="card card-water">
+      <h2>Water Level</h2>
+      <div class="gauge">
+        <div class="gauge-body">
+          <div class="gauge-fill" id="water-fill"></div>
+          <div class="gauge-cover" id="water-value">0%</div>
         </div>
-        <div class="nav-status">
-            <span class="status-indicator">
-                <div class="status-dot" id="ws-status"></div>
-                <span class="status-text" id="status-text">Connecting...</span>
-            </span>
-            <div class="timestamp" id="last-update">Last update: --</div>
-            <div class="nav-actions">
-                <span class="user-greeting">Welcome, <span id="user-name">User</span></span>
-                <button class="logout-btn" id="logout-btn" title="Logout">
-                    <span class="logout-icon">🚪</span>
-                    <span class="logout-text">Logout</span>
-                </button>
-            </div>
-        </div>
-    </nav>
+      </div>
+      <p>Raw: <span id="water-raw">0</span></p>
+    </div>
 
-    <main class="dashboard">
-        <section class="metrics-grid">
-            <!-- Water Level Monitoring -->
-            <article class="metric-card priority-high">
-                <header class="card-header">
-                    <div class="card-icon water-icon">💧</div>
-                    <div class="card-title">
-                        <h3>Water Level</h3>
-                        <span class="card-subtitle">Primary Sensor</span>
-                    </div>
-                </header>
-                <div class="gauge-container">
-                    <div class="gauge">
-                        <div class="gauge-track">
-                            <div class="gauge-fill" id="water-fill"></div>
-                        </div>
-                        <div class="gauge-center">
-                            <span class="gauge-value" id="water-percent">0</span>
-                            <span class="gauge-unit">%</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="metric-details">
-                    <div class="detail-item">
-                        <span class="label">Current</span>
-                        <span class="value" id="water-raw">0</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="label">Alert Level</span>
-                        <span class="value alert-level">3.0m</span>
-                    </div>
-                </div>
-            </article>
+    <div class="card card-gate">
+      <h2>Gate Status</h2>
+      <h3 id="gate-status">CLOSED</h3>
+      <div class="maintenance-controls">
+        <button onclick="toggleGate('OPEN')">Open (Maint)</button>
+        <button onclick="toggleGate('CLOSE')">Close (Maint)</button>
+      </div>
+    </div>
 
-            <!-- Environmental Data -->
-            <article class="metric-card">
-                <header class="card-header">
-                    <div class="card-icon env-icon">🌡️</div>
-                    <div class="card-title">
-                        <h3>Environment</h3>
-                        <span class="card-subtitle">Sensor Data</span>
-                    </div>
-                </header>
-                <div class="env-metrics">
-                    <div class="env-item">
-                        <div class="env-label">Temperature</div>
-                        <div class="env-value"><span id="temp-value">0</span>°C</div>
-                        <div class="env-trend neutral" id="temp-trend">--</div>
-                    </div>
-                    <div class="env-item">
-                        <div class="env-label">Humidity</div>
-                        <div class="env-value"><span id="humidity-value">0</span>%</div>
-                        <div class="env-trend neutral" id="humidity-trend">--</div>
-                    </div>
-                    <div class="env-item">
-                        <div class="env-label">Light Level</div>
-                        <div class="env-value"><span id="light-value">0</span> lux</div>
-                        <div class="env-trend neutral" id="light-trend">--</div>
-                    </div>
-                </div>
-            </article>
+    <div class="card card-env">
+      <h2>Environment</h2>
+      <p>Temp: <span id="temp-value">0</span>&deg;C</p>
+      <p>Hum: <span id="humidity-value">0</span>%</p>
+      <p>Rain: <span id="rain-status">--</span></p>
+      <p>Light: <span id="light-value">0</span></p>
+    </div>
+  </div>
 
-            <!-- Gate Control -->
-            <article class="metric-card control-card">
-                <header class="card-header">
-                    <div class="card-icon gate-icon">🚪</div>
-                    <div class="card-title">
-                        <h3>Flood Gate</h3>
-                        <span class="card-subtitle">Control System</span>
-                    </div>
-                </header>
-                <div class="gate-status">
-                    <div class="status-display" id="gate-display">
-                        <div class="status-icon" id="gate-icon">🔴</div>
-                        <span class="status-label" id="gate-status">CLOSED</span>
-                    </div>
-                    <button class="control-btn primary" id="gate-toggle">
-                        <span>Toggle Gate</span>
-                    </button>
-                </div>
-                <div class="gate-info">
-                    <small>Auto-mode: Enabled</small>
-                </div>
-            </article>
+  <div id="qr-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="toggleQR()">&times;</span>
+      <h3>Connect to Network</h3>
+      <p><strong>SSID:</strong> FloodMonitor_Network</p>
+      <p><strong>Password:</strong> 12345678</p>
+    </div>
+  </div>
 
-            <!-- Rain Detection -->
-            <article class="metric-card">
-                <header class="card-header">
-                    <div class="card-icon rain-icon">🌧️</div>
-                    <div class="card-title">
-                        <h3>Rain Sensor</h3>
-                        <span class="card-subtitle">Weather Monitor</span>
-                    </div>
-                </header>
-                <div class="rain-status">
-                    <div class="rain-indicator" id="rain-indicator">
-                        <div class="rain-visual"></div>
-                        <span id="rain-status">No Rain Detected</span>
-                    </div>
-                    <div class="rain-details">
-                        <div class="detail-item">
-                            <span class="label">Intensity</span>
-                            <span class="value"><span id="rain-value">0</span> mm/h</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="label">Raw Value</span>
-                            <span class="value" id="rain-raw">0</span>
-                        </div>
-                    </div>
-                </div>
-            </article>
-        </section>
+  <div id="db-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="toggleDatabase()">&times;</span>
+      <h3>Database Status</h3>
+      <div id="db-status-content">Loading...</div>
+    </div>
+  </div>
 
-        <!-- Alert Panel -->
-        <section class="alerts-panel">
-            <h2>System Alerts</h2>
-            <div class="alert-item info" id="system-alert">
-                <div class="alert-icon">ℹ️</div>
-                <div class="alert-content">
-                    <div class="alert-title">System Status</div>
-                    <div class="alert-message" id="alert-message">Initializing system...</div>
-                </div>
-                <div class="alert-time" id="alert-time">--</div>
-            </div>
-        </section>
-    </main>
+  <script src="/script.js?v=4"></script>
 
-    <script>
-// Dashboard functionality
-let currentGateStatus = 'CLOSED';
-
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('🔧 Dashboard loaded');
+  <script>
+    let currentUser = 'admin'; // Simplified for ESP32
     
-    // Initialize dashboard
-    initDashboard();
-    setupLogout();
-    setupGateToggle();
-    
-    // Start data updates
-    startDataFetching();
-});
-
-function initDashboard() {
-    updateConnectionStatus(true);
-    loadUserInfo();
-}
-
-async function loadUserInfo() {
-    try {
-        // For now, just set a default user name
-        document.getElementById('user-name').textContent = 'Admin';
-    } catch (error) {
-        console.error('Error loading user info:', error);
+    // Simplified logging for ESP32
+    function logActivity(action, details = {}) {
+      fetch('/log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: action,
+          details: JSON.stringify(details),
+          user: currentUser,
+          timestamp: Date.now()
+        })
+      }).catch(() => {}); // Fail silently
     }
-}
 
-function setupLogout() {
-    const logoutBtn = document.getElementById('logout-btn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', async function() {
-            if (confirm('Are you sure you want to logout?')) {
-                try {
-                    window.location.href = '/login';
-                } catch (error) {
-                    console.log('Logout failed, redirecting anyway...');
-                    window.location.href = '/login';
-                }
+    // Simplified authentication check
+    fetch('/auth-check')
+      .then(response => {
+        if (!response.ok) {
+          window.location.href = '/login.html';
+        } else {
+          return response.text();
+        }
+      })
+      .then(data => {
+        if (data && data.includes('authenticated')) {
+          document.getElementById('current-user').textContent = currentUser;
+          logActivity('DASHBOARD_ACCESS');
+        }
+      })
+      .catch(() => {
+        // If auth check fails, assume we're in development mode
+        document.getElementById('current-user').textContent = 'Development Mode';
+      });
+
+    function logout() {
+      logActivity('LOGOUT');
+      fetch('/logout', { method: 'POST' })
+        .then(() => {
+          window.location.href = '/login.html';
+        });
+    }
+
+    function downloadData() {
+      logActivity('DATA_DOWNLOAD');
+      
+      fetch('/sensor-data')
+        .then(response => response.blob())
+        .then(blob => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'flood_data_' + new Date().toISOString().slice(0,10) + '.json';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+        })
+        .catch(error => {
+          alert('Download failed: ' + error.message);
+        });
+    }
+    
+    function viewDatabase() {
+      logActivity('DATABASE_VIEW');
+      
+      fetch('/storage-status')
+        .then(response => response.json())
+        .then(data => {
+          const content = document.getElementById('db-status-content');
+          content.innerHTML = `
+            <h4>ESP32 Storage Status</h4>
+            <ul>
+              <li><strong>Storage Type:</strong> ${data.storage_type || 'LittleFS'}</li>
+              <li><strong>Total Space:</strong> ${(data.total_bytes/1024).toFixed(1)} KB</li>
+              <li><strong>Used Space:</strong> ${(data.used_bytes/1024).toFixed(1)} KB</li>
+              <li><strong>Free Space:</strong> ${(data.free_bytes/1024).toFixed(1)} KB</li>
+              <li><strong>Usage:</strong> ${data.usage_percent.toFixed(1)}%</li>
+            </ul>
+            
+            <h4>Database Records</h4>
+            <ul>
+              <li><strong>Users:</strong> ${data.user_count || 0}</li>
+              <li><strong>Sensor Data:</strong> ${data.sensor_count || 0}</li>
+              <li><strong>Activities:</strong> ${data.activity_count || 0}</li>
+            </ul>
+            
+            <h4>ESP32 System Info</h4>
+            <ul>
+              <li><strong>Chip:</strong> ${data.chip_model || 'ESP32'}</li>
+              <li><strong>CPU Frequency:</strong> ${data.cpu_freq || 240} MHz</li>
+              <li><strong>Free Heap:</strong> ${(data.free_heap/1024).toFixed(1)} KB</li>
+              <li><strong>Uptime:</strong> ${(data.uptime/60000).toFixed(1)} minutes</li>
+            </ul>
+          `;
+          
+          document.getElementById('db-modal').style.display = 'block';
+        })
+        .catch(error => {
+          alert('Failed to get system status');
+        });
+    }
+    
+    function factoryReset() {
+      if (confirm('⚠️ This will delete all data and reset to defaults. Continue?')) {
+        logActivity('FACTORY_RESET_INITIATED');
+        
+        fetch('/factory-reset', { method: 'POST' })
+          .then(response => {
+            if (response.ok) {
+              alert('✅ Factory reset completed! Device will restart.');
+              setTimeout(() => {
+                window.location.href = '/login.html';
+              }, 2000);
+            } else {
+              alert('❌ Factory reset failed');
             }
+          })
+          .catch(error => {
+            alert('❌ Factory reset error: ' + error.message);
+          });
+      }
+    }
+    
+    function toggleDatabase() {
+      const modal = document.getElementById('db-modal');
+      modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+    }
+    
+    // Gate control with ESP32 endpoints
+    function toggleGate(action) {
+      logActivity('GATE_CONTROL', { action: action });
+      
+      fetch('/gate-control', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `action=${action}`
+      })
+      .then(response => response.text())
+      .then(data => {
+        if (data.includes('success')) {
+          document.getElementById('gate-status').textContent = action;
+          logActivity('GATE_CONTROL_SUCCESS', { action: action });
+        } else {
+          alert('Gate control failed');
+        }
+      })
+      .catch(error => {
+        alert('Gate control error: ' + error.message);
+      });
+    }
+    
+    // Real-time sensor updates via WebSocket or polling
+    function updateSensorData() {
+      fetch('/sensor-current')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('water-value').textContent = data.waterLevel + '%';
+          document.getElementById('water-fill').style.height = data.waterLevel + '%';
+          document.getElementById('temp-value').textContent = data.temperature;
+          document.getElementById('humidity-value').textContent = data.humidity;
+          document.getElementById('rain-status').textContent = data.rainStatus;
+          document.getElementById('light-value').textContent = data.lightValue;
+          document.getElementById('gate-status').textContent = data.gateStatus;
+          
+          // Update system mode
+          document.getElementById('sys-mode').textContent = 'ONLINE';
+        })
+        .catch(error => {
+          document.getElementById('sys-mode').textContent = 'ERROR';
         });
     }
-}
-
-function setupGateToggle() {
-    const gateToggle = document.getElementById('gate-toggle');
-    if (gateToggle) {
-        gateToggle.addEventListener('click', function() {
-            toggleGate();
-        });
-    }
-}
-
-function toggleGate() {
-    // Toggle the gate status
-    currentGateStatus = currentGateStatus === 'OPEN' ? 'CLOSED' : 'OPEN';
     
-    // Update UI immediately
-    updateGateDisplay(currentGateStatus);
+    // Poll sensor data every 5 seconds
+    setInterval(updateSensorData, 5000);
+    updateSensorData(); // Initial load
     
-    console.log(`🚪 Gate toggled to: ${currentGateStatus}`);
-    
-    // You can add server communication here later
-    // fetch('/gate/toggle', { method: 'POST' });
-}
-
-function updateGateDisplay(status) {
-    const gateDisplay = document.getElementById('gate-display');
-    const gateIcon = document.getElementById('gate-icon');
-    const gateStatusEl = document.getElementById('gate-status');
-    
-    if (gateDisplay && gateIcon && gateStatusEl) {
-        if (status === 'OPEN') {
-            gateDisplay.classList.add('open');
-            gateDisplay.classList.remove('closed');
-            gateIcon.textContent = '🟢';
-            gateStatusEl.textContent = 'OPEN';
-        } else {
-            gateDisplay.classList.add('closed');
-            gateDisplay.classList.remove('open');
-            gateIcon.textContent = '🔴';
-            gateStatusEl.textContent = 'CLOSED';
+    // WebSocket connection logging
+    if (typeof WebSocket !== 'undefined') {
+      const ws = new WebSocket('ws://' + window.location.host + '/ws');
+      
+      ws.onopen = function() {
+        logActivity('WEBSOCKET_CONNECTED');
+        document.getElementById('ws-status').style.backgroundColor = 'green';
+      };
+      
+      ws.onclose = function() {
+        logActivity('WEBSOCKET_DISCONNECTED');
+        document.getElementById('ws-status').style.backgroundColor = 'red';
+      };
+      
+      ws.onmessage = function(event) {
+        try {
+          const data = JSON.parse(event.data);
+          updateSensorData(data);
+        } catch (error) {
+          logActivity('WEBSOCKET_DATA_ERROR', { error: error.toString() });
         }
+      };
     }
-}
+  </script>
 
-function updateConnectionStatus(connected) {
-    const statusDot = document.getElementById('ws-status');
-    const statusText = document.getElementById('status-text');
-    
-    if (statusDot && statusText) {
-        if (connected) {
-            statusDot.classList.add('connected');
-            statusText.textContent = 'Online';
-        } else {
-            statusDot.classList.remove('connected');
-            statusText.textContent = 'Offline';
-        }
-    }
-}
-
-function startDataFetching() {
-    // Generate mock data every 2 seconds
-    setInterval(updateMockData, 2000);
-    updateMockData(); // Initial update
-}
-
-function updateMockData() {
-    // Update water level
-    const waterPercent = Math.floor(Math.random() * 60) + 30; // 30-90%
-    const rotation = (waterPercent / 100) * 180;
-    
-    const waterFill = document.getElementById('water-fill');
-    const waterPercentEl = document.getElementById('water-percent');
-    const waterRaw = document.getElementById('water-raw');
-    
-    if (waterFill) waterFill.style.transform = `rotate(${rotation}deg)`;
-    if (waterPercentEl) waterPercentEl.textContent = waterPercent;
-    if (waterRaw) waterRaw.textContent = `${(Math.random() * 1.5 + 1.5).toFixed(1)}m`;
-    
-    // Update environmental data
-    const temp = document.getElementById('temp-value');
-    const humidity = document.getElementById('humidity-value');
-    const light = document.getElementById('light-value');
-    
-    if (temp) temp.textContent = Math.floor(Math.random() * 8) + 25; // 25-32°C
-    if (humidity) humidity.textContent = Math.floor(Math.random() * 30) + 50; // 50-80%
-    if (light) light.textContent = Math.floor(Math.random() * 600) + 200; // 200-800 lux
-    
-    // Update rain sensor
-    const rainStatus = document.getElementById('rain-status');
-    const rainValue = document.getElementById('rain-value');
-    const rainRaw = document.getElementById('rain-raw');
-    const rainIndicator = document.getElementById('rain-indicator');
-    
-    const isRaining = Math.random() > 0.7;
-    
-    if (rainStatus) rainStatus.textContent = isRaining ? 'Rain Detected' : 'No Rain Detected';
-    if (rainValue) rainValue.textContent = isRaining ? Math.floor(Math.random() * 10) + 1 : 0;
-    if (rainRaw) rainRaw.textContent = Math.floor(Math.random() * 1024);
-    
-    if (rainIndicator) {
-        if (isRaining) {
-            rainIndicator.classList.add('raining');
-            rainIndicator.classList.remove('no-rain');
-        } else {
-            rainIndicator.classList.add('no-rain');
-            rainIndicator.classList.remove('raining');
-        }
-    }
-    
-    // Update timestamp
-    const lastUpdate = document.getElementById('last-update');
-    if (lastUpdate) {
-        lastUpdate.textContent = `Last update: ${new Date().toLocaleTimeString()}`;
-    }
-    
-    // Update alert message
-    const alertMessage = document.getElementById('alert-message');
-    const alertTime = document.getElementById('alert-time');
-    
-    if (alertMessage) alertMessage.textContent = 'All sensors operating normally';
-    if (alertTime) alertTime.textContent = 'Just now';
-}
-    </script>
 </body>
 </html>
 )rawliteral";
