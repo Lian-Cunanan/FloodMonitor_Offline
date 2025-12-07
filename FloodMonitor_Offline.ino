@@ -1,5 +1,6 @@
 /*
  * FLOOD MONITORING SYSTEM
+<<<<<<< HEAD
  * Professional ESP32-based Flood Monitor with Database Integration
  * 
  * Author: Lian Cunanan
@@ -30,6 +31,10 @@
  * License: MIT
  * Version: 1.0.0
  * Last Updated: December 2024
+=======
+ * Compliant with CPE 414 Exam Requirements
+ * Includes CAPTIVE PORTAL (Auto-Redirect)
+>>>>>>> d5a1704f3b13828ef3fbae00aa481f41e2ef0706
  */
 
 #include <WiFi.h>
