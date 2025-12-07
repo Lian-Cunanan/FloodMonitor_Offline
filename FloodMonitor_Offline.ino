@@ -1,7 +1,35 @@
 /*
  * FLOOD MONITORING SYSTEM
+ * Professional ESP32-based Flood Monitor with Database Integration
+ * 
+ * Author: Lian Cunanan
+ * GitHub: https://github.com/Lian Cunanan
+ * Email: liancunanan2@gmail.com
+ * 
+ * Features:
+ * - Real-time sensor monitoring (Water, Temperature, Humidity, Rain, Light)
+ * - Automatic flood gate control with configurable thresholds
+ * - Professional responsive web interface with captive portal
+ * - Internal LittleFS database with 10-minute data logging
+ * - User authentication and activity tracking
+ * - Three operation modes: AUTO, MAINTENANCE, SLEEP
+ * - WebSocket real-time data streaming
+ * - Factory reset and system status monitoring
+ * 
+ * Hardware Requirements:
+ * - ESP32 Development Board
+ * - Ultrasonic Water Level Sensor (HC-SR04)
+ * - DHT22 Temperature/Humidity Sensor
+ * - Rain Detection Sensor
+ * - LDR Light Sensor
+ * - Servo Motor for Gate Control
+ * 
  * Compliant with CPE 414 Exam Requirements
  * Includes CAPTIVE PORTAL (Auto-Redirect)
+ * 
+ * License: MIT
+ * Version: 1.0.0
+ * Last Updated: December 2024
  */
 
 #include <WiFi.h>
