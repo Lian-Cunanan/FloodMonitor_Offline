@@ -1,4 +1,4 @@
-<div align="center">
+<div align="center>
 
 # 🌊 IoT Flood Monitor Pro
 ### *Real-Time Flood Monitoring & Control System*
@@ -550,4 +550,3 @@ After installation, verify these libraries appear in your Arduino IDE:
 <sub>🎓 Professional IoT Development Project | Built for Learning & Real-World Application | © 2024 Lian Cunanan & Development Team</sub>
 
 </div>
->>>>>>> d5a1704f3b13828ef3fbae00aa481f41e2ef0706
