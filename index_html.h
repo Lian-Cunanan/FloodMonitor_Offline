@@ -2,7 +2,6 @@
 
 const char index_html[] PROGMEM = R"rawliteral(
 <!DOCTYPE html>
-<<<<<<< HEAD
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -13,13 +12,39 @@ const char index_html[] PROGMEM = R"rawliteral(
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+  <div class="alert-banner" id="alert-banner" style="display: none;">
+    <span id="alert-message">System Alert</span>
+    <button onclick="dismissAlert()" class="alert-dismiss">✕</button>
+  </div>
+
   <header class="header">
-    <div class="header-info">
+    <div class="header-left">
       <h1>Flood Monitor</h1>
-      <div class="status-badge online" id="system-status">
-        <span id="sys-mode">LOADING...</span>
+      <div class="header-info">
+        <div class="status-badge" id="system-status">
+          <span id="sys-mode">LOADING...</span>
+        </div>
+        <small>User: <strong id="current-user">Loading...</strong></small>
+        
+        <div class="nav-buttons">
+          <button class="nav-btn" onclick="toggleQR()">
+            <span class="icon">📱</span>
+            <span class="text">WiFi Access</span>
+          </button>
+          <button class="nav-btn" onclick="downloadData()">
+            <span class="icon">📊</span>
+            <span class="text">Download Data</span>
+          </button>
+          <button class="nav-btn" onclick="downloadLogs()">
+            <span class="icon">📋</span>
+            <span class="text">Activity Logs</span>
+          </button>
+          <button class="nav-btn" onclick="viewDatabase()">
+            <span class="icon">💾</span>
+            <span class="text">System Status</span>
+          </button>
+        </div>
       </div>
-      <small>User: <strong id="current-user">Loading...</strong></small>
     </div>
 
     <div class="header-controls">
@@ -29,21 +54,6 @@ const char index_html[] PROGMEM = R"rawliteral(
   </header>
 
   <div class="container">
-    <div class="action-bar">
-      <button class="action-btn" onclick="toggleQR()">
-        📱 WiFi Access
-      </button>
-      <button class="action-btn" onclick="downloadData()">
-        📊 Download Data
-      </button>
-      <button class="action-btn" onclick="downloadLogs()">
-        📋 Activity Logs
-      </button>
-      <button class="action-btn" onclick="viewDatabase()">
-        💾 System Status
-      </button>
-    </div>
-
     <div class="grid-container">
       <!-- Water Level Card -->
       <div class="card card-water">
@@ -59,6 +69,7 @@ const char index_html[] PROGMEM = R"rawliteral(
           <span>Raw Reading:</span>
           <span class="status-value" id="water-raw">0</span>
         </div>
+        <p class="threshold-info">Alert: ≥70% | Critical: ≥85%</p>
       </div>
 
       <!-- Gate Control Card -->
@@ -83,20 +94,23 @@ const char index_html[] PROGMEM = R"rawliteral(
         <div class="status-grid">
           <div class="status-item">
             <span>Temperature</span>
-            <span class="status-value"><span id="temp-value">0</span>°C</span>
+            <span class="status-value"><span id="temp-value">0</span>°C <span id="temp-alert" class="inline-alert">🔥</span></span>
           </div>
           <div class="status-item">
             <span>Humidity</span>
-            <span class="status-value"><span id="humidity-value">0</span>%</span>
+            <span class="status-value"><span id="humidity-value">0</span>% <span id="humidity-alert" class="inline-alert">💧</span></span>
           </div>
           <div class="status-item">
             <span>Weather</span>
-            <span class="status-value" id="rain-status">--</span>
+            <span class="status-value" id="rain-status">-- <span id="rain-alert" class="inline-alert">🌧️</span></span>
           </div>
           <div class="status-item">
             <span>Light Level</span>
-            <span class="status-value" id="light-value">0</span>
+            <span class="status-value" id="light-value">0 <span id="light-alert" class="inline-alert">💡</span></span>
           </div>
+        </div>
+        <div class="threshold-info">
+          <small>Temp Alert: >35°C | Humidity Alert: >90% | Rain Alert: Active | Light Alert: <100</small>
         </div>
       </div>
 
@@ -117,79 +131,13 @@ const char index_html[] PROGMEM = R"rawliteral(
             <div class="db-stat-label">Uptime</div>
           </div>
         </div>
-        <button class="action-btn" onclick="viewDatabase()" style="width: 100%; margin-top: 1rem;">
+        <button class="view-details-btn" onclick="viewDatabase()">
           View Details
         </button>
-=======
-<html>
-<head>
-  <title>Flood Monitoring</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/style.css">
-</head>
-<body>
-  <div class="header">
-    <div>
-      <h1>Flood Monitor</h1>
-      <small>Mode: <span id="sys-mode" style="font-weight:bold; color:#0056b3;">LOADING...</span></small>
-      <small>User: <span id="current-user" style="font-weight:bold; color:#0056b3;">Loading...</span></small>
-    </div>
-
-    <div style="display: flex; align-items: center; gap: 12px;">
-      <button class="logout-btn" onclick="logout()">Logout</button>
-      <div class="status-dot" id="ws-status"></div>
-    </div>
-  </div>
-
-  <!-- Alert Banner -->
-  <div id="alert-banner" class="alert-banner hidden">
-    <span id="alert-message">System Alert</span>
-    <button onclick="dismissAlert()" class="alert-dismiss">✕</button>
-  </div>
-
-  <div class="grid-container">
-    <div style="grid-column: 1 / -1; text-align: right;">
-        <button class="qr-btn" onclick="toggleQR()">&#128241; WiFi Info</button>
-        <button class="qr-btn" onclick="downloadData()">&#128190; Download Data</button>
-        <button class="qr-btn" onclick="viewDatabase()">&#128248; System Status</button>
-        <button class="qr-btn" onclick="factoryReset()">&#128295; Factory Reset</button>
-    </div>
-
-    <div class="card card-water" id="water-card">
-      <h2>Water Level <span id="water-alert" class="sensor-alert">⚠️</span></h2>
-      <div class="gauge">
-        <div class="gauge-body">
-          <div class="gauge-fill" id="water-fill"></div>
-          <div class="gauge-cover" id="water-value">0%</div>
-        </div>
-      </div>
-      <p>Raw: <span id="water-raw">0</span></p>
-      <p class="threshold-info">Alert: ≥70% | Critical: ≥85%</p>
-    </div>
-
-    <div class="card card-gate" id="gate-card">
-      <h2>Gate Status <span id="gate-alert" class="sensor-alert">⚠️</span></h2>
-      <h3 id="gate-status">CLOSED</h3>
-      <div class="maintenance-controls">
-        <button onclick="toggleGate('OPEN')">Open (Maint)</button>
-        <button onclick="toggleGate('CLOSE')">Close (Maint)</button>
-      </div>
-    </div>
-
-    <div class="card card-env" id="env-card">
-      <h2>Environment <span id="env-alert" class="sensor-alert">⚠️</span></h2>
-      <p>Temp: <span id="temp-value">0</span>&deg;C <span id="temp-alert" class="inline-alert">🔥</span></p>
-      <p>Hum: <span id="humidity-value">0</span>% <span id="humidity-alert" class="inline-alert">💧</span></p>
-      <p>Rain: <span id="rain-status">--</span> <span id="rain-alert" class="inline-alert">🌧️</span></p>
-      <p>Light: <span id="light-value">0</span> <span id="light-alert" class="inline-alert">💡</span></p>
-      <div class="threshold-info">
-        <small>Temp Alert: >35°C | Humidity Alert: >90% | Rain Alert: Active | Light Alert: <100</small>
->>>>>>> d5a1704f3b13828ef3fbae00aa481f41e2ef0706
       </div>
     </div>
   </div>
 
-<<<<<<< HEAD
   <!-- WiFi Info Modal -->
   <div id="qr-modal" class="modal">
     <div class="modal-content">
@@ -227,202 +175,7 @@ const char index_html[] PROGMEM = R"rawliteral(
     </div>
   </div>
 
-  <script src="/script.js?v=5"></script>
-  <script>
-    let currentUser = 'admin'; // Simplified for ESP32
-    
-    // Simplified logging for ESP32
-    function logActivity(action, details = {}) {
-      fetch('/log', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: action,
-          details: JSON.stringify(details),
-          user: currentUser,
-          timestamp: Date.now()
-        })
-      }).catch(() => {}); // Fail silently
-    }
-
-    // Simplified authentication check
-    fetch('/auth-check')
-      .then(response => {
-        if (!response.ok) {
-          window.location.href = '/login.html';
-        } else {
-          return response.text();
-        }
-      })
-      .then(data => {
-        if (data && data.includes('authenticated')) {
-          document.getElementById('current-user').textContent = currentUser;
-          logActivity('DASHBOARD_ACCESS');
-        }
-      })
-      .catch(() => {
-        // If auth check fails, assume we're in development mode
-        document.getElementById('current-user').textContent = 'Development Mode';
-      });
-
-    function logout() {
-      logActivity('LOGOUT');
-      fetch('/logout', { method: 'POST' })
-        .then(() => {
-          window.location.href = '/login.html';
-        });
-    }
-
-    function downloadData() {
-      logActivity('DATA_DOWNLOAD');
-      
-      fetch('/sensor-data')
-        .then(response => response.blob())
-        .then(blob => {
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = 'flood_data_' + new Date().toISOString().slice(0,10) + '.json';
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-          window.URL.revokeObjectURL(url);
-        })
-        .catch(error => {
-          alert('Download failed: ' + error.message);
-        });
-    }
-    
-    function viewDatabase() {
-      logActivity('DATABASE_VIEW');
-      
-      fetch('/storage-status')
-        .then(response => response.json())
-        .then(data => {
-          const content = document.getElementById('db-status-content');
-          content.innerHTML = `
-            <h4>ESP32 Storage Status</h4>
-            <ul>
-              <li><strong>Storage Type:</strong> ${data.storage_type || 'LittleFS'}</li>
-              <li><strong>Total Space:</strong> ${(data.total_bytes/1024).toFixed(1)} KB</li>
-              <li><strong>Used Space:</strong> ${(data.used_bytes/1024).toFixed(1)} KB</li>
-              <li><strong>Free Space:</strong> ${(data.free_bytes/1024).toFixed(1)} KB</li>
-              <li><strong>Usage:</strong> ${data.usage_percent.toFixed(1)}%</li>
-            </ul>
-            
-            <h4>Database Records</h4>
-            <ul>
-              <li><strong>Users:</strong> ${data.user_count || 0}</li>
-              <li><strong>Sensor Data:</strong> ${data.sensor_count || 0}</li>
-              <li><strong>Activities:</strong> ${data.activity_count || 0}</li>
-            </ul>
-            
-            <h4>ESP32 System Info</h4>
-            <ul>
-              <li><strong>Chip:</strong> ${data.chip_model || 'ESP32'}</li>
-              <li><strong>CPU Frequency:</strong> ${data.cpu_freq || 240} MHz</li>
-              <li><strong>Free Heap:</strong> ${(data.free_heap/1024).toFixed(1)} KB</li>
-              <li><strong>Uptime:</strong> ${(data.uptime/60000).toFixed(1)} minutes</li>
-            </ul>
-          `;
-          
-          document.getElementById('db-modal').style.display = 'block';
-        })
-        .catch(error => {
-          alert('Failed to get system status');
-        });
-    }
-    
-    function factoryReset() {
-      if (confirm('⚠️ This will delete all data and reset to defaults. Continue?')) {
-        logActivity('FACTORY_RESET_INITIATED');
-        
-        fetch('/factory-reset', { method: 'POST' })
-          .then(response => {
-            if (response.ok) {
-              alert('✅ Factory reset completed! Device will restart.');
-              setTimeout(() => {
-                window.location.href = '/login.html';
-              }, 2000);
-            } else {
-              alert('❌ Factory reset failed');
-            }
-          })
-          .catch(error => {
-            alert('❌ Factory reset error: ' + error.message);
-          });
-      }
-    }
-    
-    function toggleDatabase() {
-      const modal = document.getElementById('db-modal');
-      modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
-    }
-    
-    // Gate control with ESP32 endpoints
-    function toggleGate(action) {
-      logActivity('GATE_CONTROL', { action: action });
-      
-      fetch('/gate-control', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `action=${action}`
-      })
-      .then(response => response.text())
-      .then(data => {
-        if (data.includes('success')) {
-          document.getElementById('gate-status').textContent = action;
-          logActivity('GATE_CONTROL_SUCCESS', { action: action });
-        } else {
-          alert('Gate control failed');
-        }
-      })
-      .catch(error => {
-        alert('Gate control error: ' + error.message);
-      });
-    }
-    
-    // Real-time sensor updates via WebSocket or polling
-    function updateSensorData() {
-      fetch('/sensor-current')
-        .then(response => response.json())
-        .then(data => {
-          document.getElementById('water-value').textContent = data.waterLevel + '%';
-          document.getElementById('water-fill').style.height = data.waterLevel + '%';
-          document.getElementById('temp-value').textContent = data.temperature;
-          document.getElementById('humidity-value').textContent = data.humidity;
-          document.getElementById('rain-status').textContent = data.rainStatus;
-          document.getElementById('light-value').textContent = data.lightValue;
-          document.getElementById('gate-status').textContent = data.gateStatus;
-          
-          // Update system mode
-          document.getElementById('sys-mode').textContent = 'ONLINE';
-        })
-        .catch(error => {
-          document.getElementById('sys-mode').textContent = 'ERROR';
-        });
-    }
-    
-=======
-  <div id="qr-modal" class="modal">
-    <div class="modal-content">
-      <span class="close-btn" onclick="toggleQR()">&times;</span>
-      <h3>Connect to Network</h3>
-      <p><strong>SSID:</strong> FloodMonitor_Network</p>
-      <p><strong>Password:</strong> 12345678</p>
-    </div>
-  </div>
-
-  <div id="db-modal" class="modal">
-    <div class="modal-content">
-      <span class="close-btn" onclick="toggleDatabase()">&times;</span>
-      <h3>Database Status</h3>
-      <div id="db-status-content">Loading...</div>
-    </div>
-  </div>
-
-  <script src="/script.js?v=4"></script>
-
+  <script src="/script.js?v=6"></script>
   <script>
     let currentUser = 'admin';
     let alertAudio = null;
@@ -430,22 +183,10 @@ const char index_html[] PROGMEM = R"rawliteral(
 
     // Sensor thresholds
     const THRESHOLDS = {
-      water: {
-        warning: 70,   // Warning at 70%
-        critical: 85   // Critical at 85%
-      },
-      temperature: {
-        warning: 35,   // Warning above 35°C
-        critical: 40   // Critical above 40°C
-      },
-      humidity: {
-        warning: 85,   // Warning above 85%
-        critical: 95   // Critical above 95%
-      },
-      light: {
-        warning: 100,  // Warning below 100 (too dark)
-        critical: 50   // Critical below 50 (very dark)
-      }
+      water: { warning: 70, critical: 85 },
+      temperature: { warning: 35, critical: 40 },
+      humidity: { warning: 85, critical: 95 },
+      light: { warning: 100, critical: 50 }
     };
 
     // Initialize audio for alerts
@@ -627,7 +368,6 @@ const char index_html[] PROGMEM = R"rawliteral(
 
       // Update display values
       document.getElementById('water-value').textContent = (data.waterLevel || data.water_percent || 0) + '%';
-      document.getElementById('water-fill').style.height = (data.waterLevel || data.water_percent || 0) + '%';
       document.getElementById('water-raw').textContent = data.water_raw || 0;
       
       document.getElementById('temp-value').textContent = data.temperature || data.temp || 0;
@@ -639,31 +379,68 @@ const char index_html[] PROGMEM = R"rawliteral(
       // Update system mode
       document.getElementById('sys-mode').textContent = data.mode || 'ONLINE';
       
-      // Check for alerts
-      const alertData = {
+      // Check for alerts and apply enhanced styling
+      checkSensorAlerts({
         waterLevel: data.waterLevel || data.water_percent || 0,
         temperature: data.temperature || data.temp || 0,
         humidity: data.humidity || 0,
         rainStatus: data.rainStatus || data.rain_status || '',
         lightValue: data.lightValue || data.light_raw || 0,
         gateStatus: data.gateStatus || data.gate_status || 'UNKNOWN'
-      };
-      
-      checkSensorAlerts(alertData);
+      });
     }
 
->>>>>>> d5a1704f3b13828ef3fbae00aa481f41e2ef0706
+    // Gate control with ESP32 endpoints
+    function toggleGate(action) {
+      logActivity('GATE_CONTROL', { action: action });
+      
+      fetch('/gate-control', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `action=${action}`
+      })
+      .then(response => response.text())
+      .then(data => {
+        if (data.includes('success')) {
+          document.getElementById('gate-status').textContent = action;
+          logActivity('GATE_CONTROL_SUCCESS', { action: action });
+        } else {
+          alert('Gate control failed');
+        }
+      })
+      .catch(error => {
+        alert('Gate control error: ' + error.message);
+      });
+    }
+    
+    // Real-time sensor updates via WebSocket or polling
+    function updateSensorData() {
+      fetch('/sensor-current')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('water-value').textContent = data.waterLevel + '%';
+          document.getElementById('water-fill').style.height = data.waterLevel + '%';
+          document.getElementById('temp-value').textContent = data.temperature;
+          document.getElementById('humidity-value').textContent = data.humidity;
+          document.getElementById('rain-status').textContent = data.rainStatus;
+          document.getElementById('light-value').textContent = data.lightValue;
+          document.getElementById('gate-status').textContent = data.gateStatus;
+          
+          // Update system mode
+          document.getElementById('sys-mode').textContent = 'ONLINE';
+        })
+        .catch(error => {
+          document.getElementById('sys-mode').textContent = 'ERROR';
+        });
+    }
+    
     // Poll sensor data every 5 seconds
     setInterval(updateSensorData, 5000);
     updateSensorData(); // Initial load
     
     // WebSocket connection logging
     if (typeof WebSocket !== 'undefined') {
-<<<<<<< HEAD
-      const ws = new WebSocket('ws://' + window.location.host + '/ws');
-=======
       const ws = new WebSocket('ws://' + window.location.host + ':81');
->>>>>>> d5a1704f3b13828ef3fbae00aa481f41e2ef0706
       
       ws.onopen = function() {
         logActivity('WEBSOCKET_CONNECTED');
@@ -684,10 +461,6 @@ const char index_html[] PROGMEM = R"rawliteral(
         }
       };
     }
-<<<<<<< HEAD
-  </script>
-
-=======
 
     // Initialize alerts
     initAlertAudio();
@@ -777,7 +550,6 @@ const char index_html[] PROGMEM = R"rawliteral(
     }
   </style>
 
->>>>>>> d5a1704f3b13828ef3fbae00aa481f41e2ef0706
 </body>
 </html>
 )rawliteral";

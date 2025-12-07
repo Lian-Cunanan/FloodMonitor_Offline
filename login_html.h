@@ -8,10 +8,11 @@ const char login_html[] PROGMEM = R"rawliteral(
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #87ceeb;
+      background-attachment: fixed;
       margin: 0;
-      padding: 0;
+      padding: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -20,130 +21,199 @@ const char login_html[] PROGMEM = R"rawliteral(
     
     .login-container {
       background: white;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 3rem 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
       width: 100%;
-      max-width: 400px;
+      max-width: 500px;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #2563eb, #0891b2, #059669);
     }
     
     .form-group {
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
     }
     
     label {
       display: block;
-      margin-bottom: 0.5rem;
-      font-weight: bold;
+      margin-bottom: 0.75rem;
+      font-weight: 700;
+      color: #374151;
+      font-size: 1rem;
     }
     
     input {
       width: 100%;
-      padding: 0.75rem;
-      border: 1px solid #ddd;
-      border-radius: 5px;
+      padding: 1rem 1.25rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
       box-sizing: border-box;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: #f9fafb;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: #2563eb;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
     }
     
     button {
       width: 100%;
-      padding: 0.75rem;
-      background: #0056b3;
+      padding: 1rem 1.5rem;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 12px;
       cursor: pointer;
-      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
     }
     
     button:hover {
-      background: #004494;
+      background: linear-gradient(135deg, #1d4ed8, #1e40af);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+    }
+    
+    button:active {
+      transform: translateY(0);
     }
     
     .toggle-link {
       text-align: center;
-      color: #0056b3;
+      color: #2563eb;
       cursor: pointer;
       text-decoration: underline;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0.5rem;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+    
+    .toggle-link:hover {
+      color: #1d4ed8;
+      background: rgba(37, 99, 235, 0.05);
     }
     
     .error {
-      color: red;
+      color: #dc2626;
       text-align: center;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      background: #fef2f2;
+      border-radius: 10px;
+      border-left: 4px solid #dc2626;
+      font-weight: 500;
     }
     
     .success {
-      color: green;
+      color: #059669;
       text-align: center;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      background: #dcfce7;
+      border-radius: 10px;
+      border-left: 4px solid #059669;
+      font-weight: 500;
     }
-    
+
+    h2 {
+      text-align: center;
+      color: #1f2937;
+      margin-bottom: 2rem;
+      font-size: 2rem;
+      font-weight: 800;
+      position: relative;
+    }
+
+    h2::before {
+      content: "🌊";
+      font-size: 2rem;
+      margin-right: 0.5rem;
+    }
+
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: linear-gradient(90deg, #2563eb, #0891b2);
+      border-radius: 2px;
+    }
+
     .loading {
       opacity: 0.6;
       pointer-events: none;
     }
-    
-    .info {
-      color: #0056b3;
+
+    .demo-info {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+      border-radius: 12px;
+      border: 1px solid #0891b2;
       text-align: center;
-      margin-bottom: 1rem;
+    }
+
+    .demo-info small {
       font-size: 0.9rem;
+      font-weight: 600;
     }
-    
-    .password-requirements {
-      font-size: 0.8rem;
-      color: #666;
-      margin-top: 0.5rem;
-    }
-    
-    .activity-log {
-      position: fixed;
-      bottom: 10px;
-      right: 10px;
-      background: rgba(0,0,0,0.8);
-      color: white;
-      padding: 5px 10px;
-      border-radius: 5px;
-      font-size: 0.8rem;
-      display: none;
-    }
-    
-    .system-info {
-      position: fixed;
-      bottom: 10px;
-      left: 10px;
-      background: rgba(0,0,0,0.7);
-      color: white;
-      padding: 5px 10px;
-      border-radius: 5px;
-      font-size: 0.7rem;
+
+    @media (max-width: 600px) {
+      .login-container {
+        padding: 2rem 1.5rem;
+        max-width: 400px;
+        margin: 10px;
+      }
+
+      h2 {
+        font-size: 1.75rem;
+      }
     }
   </style>
 </head>
 <body>
   <div class="login-container">
-    <h2 id="form-title">🌊 Flood Monitor Login</h2>
+    <h2 id="form-title">Flood Monitor Login</h2>
     <div id="message"></div>
     
     <form id="auth-form">
       <div class="form-group" id="username-group">
-        <label for="username">Username/Email:</label>
-        <input type="text" id="username" name="username" required autocomplete="username">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required autocomplete="username" placeholder="Enter your username">
       </div>
       
       <div class="form-group" id="email-group" style="display: none;">
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" autocomplete="email">
-        <div class="info">Use a valid email for password recovery</div>
+        <input type="email" id="email" name="email" autocomplete="email" placeholder="Enter your email address">
       </div>
       
       <div class="form-group">
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required autocomplete="current-password">
-        <div class="password-requirements" id="password-req" style="display: none;">
-          Password must be at least 6 characters long
-        </div>
+        <input type="password" id="password" name="password" required autocomplete="current-password" placeholder="Enter your password">
       </div>
       
       <button type="submit" id="submit-btn">Login</button>
@@ -153,13 +223,10 @@ const char login_html[] PROGMEM = R"rawliteral(
       <span id="toggle-text">Don't have an account? Register</span>
     </div>
     
-    <div class="info" style="margin-top: 1rem;">
-      <small>Default: admin/admin123 or operator/operator123</small>
+    <div class="demo-info">
+      <small><strong>🚀 Demo Access:</strong><br>
+      Use any username/password combination</small>
     </div>
-  </div>
-
-  <div class="system-info" id="system-info">
-    ESP32 Ready
   </div>
 
   <script>
@@ -197,16 +264,16 @@ const char login_html[] PROGMEM = R"rawliteral(
       const passwordReq = document.getElementById('password-req');
       
       if (isLoginMode) {
-        title.textContent = '🌊 Flood Monitor Login';
+        title.textContent = 'Flood Monitor Login';
         emailGroup.style.display = 'none';
         passwordReq.style.display = 'none';
         submitBtn.textContent = 'Login';
         toggleText.textContent = "Don't have an account? Register";
-        usernameLabel.textContent = 'Username/Email:';
+        usernameLabel.textContent = 'Username:';
         document.getElementById('email').required = false;
         document.getElementById('password').setAttribute('autocomplete', 'current-password');
       } else {
-        title.textContent = '🌊 Register New Account';
+        title.textContent = 'Register New Account';
         emailGroup.style.display = 'block';
         passwordReq.style.display = 'block';
         submitBtn.textContent = 'Create Account';
