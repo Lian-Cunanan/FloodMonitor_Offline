@@ -181,6 +181,138 @@ const char index_html[] PROGMEM = R"rawliteral(
     let alertAudio = null;
     let activeAlerts = new Set();
 
+    // Simplified logging for ESP32
+    function logActivity(action, details = {}) {
+      fetch('/log', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: action,
+          details: JSON.stringify(details),
+          user: currentUser,
+          timestamp: Date.now()
+        })
+      }).catch(() => {}); // Fail silently
+    }
+
+    // Simplified authentication check
+    fetch('/auth-check')
+      .then(response => {
+        if (!response.ok) {
+          window.location.href = '/login.html';
+        } else {
+          return response.text();
+        }
+      })
+      .then(data => {
+        if (data && data.includes('authenticated')) {
+          document.getElementById('current-user').textContent = currentUser;
+          logActivity('DASHBOARD_ACCESS');
+        }
+      })
+      .catch(() => {
+        // If auth check fails, assume we're in development mode
+        document.getElementById('current-user').textContent = 'Development Mode';
+      });
+
+    function logout() {
+      logActivity('LOGOUT');
+      fetch('/logout', { method: 'POST' })
+        .then(() => {
+          window.location.href = '/login.html';
+        });
+    }
+
+    function downloadData() {
+      logActivity('DATA_DOWNLOAD');
+      
+      fetch('/sensor-data')
+        .then(response => response.blob())
+        .then(blob => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'flood_data_' + new Date().toISOString().slice(0,10) + '.json';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+        })
+        .catch(error => {
+          alert('Download failed: ' + error.message);
+        });
+    }
+
+    function toggleQR() {
+      const modal = document.getElementById('qr-modal');
+      modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function downloadLogs() {
+      logActivity('LOGS_DOWNLOAD');
+      
+      fetch('/activity-logs')
+        .then(response => response.blob())
+        .then(blob => {
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'activity_logs_' + new Date().toISOString().slice(0,10) + '.json';
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+        })
+        .catch(error => {
+          alert('Download failed: ' + error.message);
+        });
+    }
+    
+    function viewDatabase() {
+      logActivity('DATABASE_VIEW');
+      
+      fetch('/storage-status')
+        .then(response => response.json())
+        .then(data => {
+          const content = document.getElementById('db-status-content');
+          content.innerHTML = `
+            <h4>ESP32 Storage Status</h4>
+            <ul>
+              <li><strong>Storage Type:</strong> ${data.storage_type || 'LittleFS'}</li>
+              <li><strong>Total Space:</strong> ${(data.total_bytes/1024).toFixed(1)} KB</li>
+              <li><strong>Used Space:</strong> ${(data.used_bytes/1024).toFixed(1)} KB</li>
+              <li><strong>Free Space:</strong> ${(data.free_bytes/1024).toFixed(1)} KB</li>
+              <li><strong>Usage:</strong> ${data.usage_percent.toFixed(1)}%</li>
+            </ul>
+            
+            <h4>Database Records</h4>
+            <ul>
+              <li><strong>Users:</strong> ${data.user_count || 0}</li>
+              <li><strong>Sensor Data:</strong> ${data.sensor_count || 0}</li>
+              <li><strong>Activities:</strong> ${data.activity_count || 0}</li>
+            </ul>
+            
+            <h4>ESP32 System Info</h4>
+            <ul>
+              <li><strong>Chip:</strong> ${data.chip_model || 'ESP32'}</li>
+              <li><strong>CPU Frequency:</strong> ${data.cpu_freq || 240} MHz</li>
+              <li><strong>Free Heap:</strong> ${(data.free_heap/1024).toFixed(1)} KB</li>
+              <li><strong>Uptime:</strong> ${(data.uptime/60000).toFixed(1)} minutes</li>
+            </ul>
+          `;
+          
+          document.getElementById('db-modal').style.display = 'block';
+        })
+        .catch(error => {
+          alert('Failed to get system status');
+        });
+    }
+
+    function toggleDatabase() {
+      const modal = document.getElementById('db-modal');
+      modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+    }
+
     // Sensor thresholds
     const THRESHOLDS = {
       water: { warning: 70, critical: 85 },

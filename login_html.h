@@ -400,16 +400,8 @@ const char login_html[] PROGMEM = R"rawliteral(
       }
     });
     
-    // Show ESP32 system info
-    fetch('/system-info')
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById('system-info').textContent = 
-          `ESP32 ${data.chip_model || 'Ready'} | ${data.free_heap || 0}KB Free`;
-      })
-      .catch(() => {
-        document.getElementById('system-info').textContent = 'ESP32 System';
-      });
+    // Show ESP32 ready status
+    console.log('ESP32 Flood Monitor Login System Ready');
   </script>
 </body>
 </html>
