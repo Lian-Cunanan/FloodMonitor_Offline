@@ -37,7 +37,6 @@ body {
   margin: 0;
 }
 
-/* Header */
 .header {
   background: var(--card-bg);
   padding: 1rem 1.5rem;
@@ -126,14 +125,12 @@ body {
   50% { opacity: 0.5; }
 }
 
-/* Main Container */
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem 1rem;
 }
 
-/* Action Buttons */
 .action-bar {
   display: flex;
   flex-wrap: wrap;
@@ -165,7 +162,6 @@ body {
   box-shadow: var(--shadow);
 }
 
-/* Grid Layout */
 .grid-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -173,7 +169,6 @@ body {
   margin-bottom: 2rem;
 }
 
-/* Cards */
 .card {
   background: var(--card-bg);
   border-radius: var(--radius-lg);
@@ -210,23 +205,18 @@ body {
   gap: 0.5rem;
 }
 
-/* Water Level Card */
 .card-water::before { background: linear-gradient(90deg, #3b82f6, #06b6d4); }
 .card-water h2::before { content: "💧"; }
 
-/* Gate Card */
 .card-gate::before { background: linear-gradient(90deg, #8b5cf6, #a855f7); }
 .card-gate h2::before { content: "🚪"; }
 
-/* Environment Card */
 .card-env::before { background: linear-gradient(90deg, #10b981, #059669); }
 .card-env h2::before { content: "🌡️"; }
 
-/* Database Card */
 .card-database::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
 .card-database h2::before { content: "💾"; }
 
-/* Gauge */
 .gauge {
   position: relative;
   width: 120px;
@@ -275,7 +265,6 @@ body {
   z-index: 10;
 }
 
-/* Status Indicators */
 .status-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -301,7 +290,6 @@ body {
 .status-warning { border-left-color: var(--warning-color); }
 .status-normal { border-left-color: var(--success-color); }
 
-/* Gate Status */
 .gate-status {
   text-align: center;
   margin: 1rem 0;
@@ -325,7 +313,6 @@ body {
   color: #166534;
 }
 
-/* Control Buttons */
 .maintenance-controls {
   display: flex;
   gap: 0.75rem;
@@ -361,7 +348,6 @@ body {
   background: #047857;
 }
 
-/* Modals */
 .modal {
   display: none;
   position: fixed;
@@ -409,7 +395,6 @@ body {
   color: var(--text-primary);
 }
 
-/* Database Status */
 .db-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -436,7 +421,6 @@ body {
   margin-top: 0.25rem;
 }
 
-/* Recent Activity */
 .activity-list {
   max-height: 200px;
   overflow-y: auto;
@@ -465,7 +449,6 @@ body {
   color: var(--text-secondary);
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .container {
     padding: 1rem;
@@ -498,7 +481,6 @@ body {
   }
 }
 
-/* Animations */
 @keyframes slideIn {
   from {
     opacity: 0;
@@ -514,7 +496,6 @@ body {
   animation: slideIn 0.5s ease-out;
 }
 
-/* Loading States */
 .loading {
   opacity: 0.6;
   pointer-events: none;
@@ -541,7 +522,6 @@ body {
   }
 }
 
-/* Success/Error Messages */
 .alert {
   padding: 1rem;
   border-radius: var(--radius);
@@ -567,7 +547,6 @@ body {
   border-left: 4px solid var(--warning-color);
 }
 
-/* Print Styles */
 @media print {
   body {
     background: white;
