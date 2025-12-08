@@ -234,53 +234,46 @@ const char login_html[] PROGMEM = R"rawliteral(
     let loginAttempts = 0;
     const maxAttempts = 5;
     
-    // Simplified logging for ESP32
+    // Optimized logging for ESP32 - reduced payload
     function logActivity(action, details = {}) {
       fetch('/log', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: action,
-          details: JSON.stringify(details),
-          timestamp: Date.now()
-        })
-      }).catch(() => {}); // Fail silently if logging fails
+        body: JSON.stringify({ action, details, t: Date.now() })
+      }).catch(() => {}); // Fail silently
     }
     
-    function validatePassword(password) {
-      if (!isLoginMode) {
-        return password.length >= 6;
-      }
-      return password.length > 0;
-    }
+    // Simplified validation
+    const validatePassword = (password) => isLoginMode ? password.length > 0 : password.length >= 6;
     
     function toggleForm() {
       isLoginMode = !isLoginMode;
-      const title = document.getElementById('form-title');
-      const emailGroup = document.getElementById('email-group');
-      const submitBtn = document.getElementById('submit-btn');
-      const toggleText = document.getElementById('toggle-text');
-      const usernameLabel = document.querySelector('label[for="username"]');
-      const passwordReq = document.getElementById('password-req');
+      const elements = {
+        title: document.getElementById('form-title'),
+        emailGroup: document.getElementById('email-group'),
+        submitBtn: document.getElementById('submit-btn'),
+        toggleText: document.getElementById('toggle-text'),
+        usernameLabel: document.querySelector('label[for="username"]'),
+        email: document.getElementById('email'),
+        password: document.getElementById('password')
+      };
       
       if (isLoginMode) {
-        title.textContent = 'Flood Monitor Login';
-        emailGroup.style.display = 'none';
-        passwordReq.style.display = 'none';
-        submitBtn.textContent = 'Login';
-        toggleText.textContent = "Don't have an account? Register";
-        usernameLabel.textContent = 'Username:';
-        document.getElementById('email').required = false;
-        document.getElementById('password').setAttribute('autocomplete', 'current-password');
+        elements.title.textContent = 'Flood Monitor Login';
+        elements.emailGroup.style.display = 'none';
+        elements.submitBtn.textContent = 'Login';
+        elements.toggleText.textContent = "Don't have an account? Register";
+        elements.usernameLabel.textContent = 'Username:';
+        elements.email.required = false;
+        elements.password.setAttribute('autocomplete', 'current-password');
       } else {
-        title.textContent = 'Register New Account';
-        emailGroup.style.display = 'block';
-        passwordReq.style.display = 'block';
-        submitBtn.textContent = 'Create Account';
-        toggleText.textContent = 'Already have an account? Login';
-        usernameLabel.textContent = 'Username:';
-        document.getElementById('email').required = true;
-        document.getElementById('password').setAttribute('autocomplete', 'new-password');
+        elements.title.textContent = 'Register New Account';
+        elements.emailGroup.style.display = 'block';
+        elements.submitBtn.textContent = 'Create Account';
+        elements.toggleText.textContent = 'Already have an account? Login';
+        elements.usernameLabel.textContent = 'Username:';
+        elements.email.required = true;
+        elements.password.setAttribute('autocomplete', 'new-password');
       }
       
       document.getElementById('message').innerHTML = '';
@@ -290,117 +283,74 @@ const char login_html[] PROGMEM = R"rawliteral(
     document.getElementById('auth-form').addEventListener('submit', function(e) {
       e.preventDefault();
       
-      const username = document.getElementById('username').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const password = document.getElementById('password').value;
+      const formData = {
+        username: document.getElementById('username').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        password: document.getElementById('password').value
+      };
+      
       const messageDiv = document.getElementById('message');
       const submitBtn = document.getElementById('submit-btn');
       
-      // Validate inputs
-      if (!username) {
-        messageDiv.innerHTML = '<div class="error">Username is required</div>';
-        return;
-      }
+      // Validation checks
+      if (!formData.username) return messageDiv.innerHTML = '<div class="error">Username is required</div>';
+      if (!validatePassword(formData.password)) return messageDiv.innerHTML = '<div class="error">Password must be at least 6 characters</div>';
+      if (!isLoginMode && (!formData.email || !formData.email.includes('@'))) return messageDiv.innerHTML = '<div class="error">Valid email is required</div>';
       
-      if (!validatePassword(password)) {
-        messageDiv.innerHTML = '<div class="error">Password must be at least 6 characters</div>';
-        return;
-      }
-      
-      if (!isLoginMode && (!email || !email.includes('@'))) {
-        messageDiv.innerHTML = '<div class="error">Valid email is required</div>';
-        return;
-      }
-      
-      // Check login attempts
+      // Rate limiting
       if (isLoginMode && loginAttempts >= maxAttempts) {
-        messageDiv.innerHTML = '<div class="error">Too many attempts. Please refresh and try again.</div>';
-        logActivity('LOGIN_BLOCKED', { username: username, attempts: loginAttempts });
-        return;
+        logActivity('LOGIN_BLOCKED', { username: formData.username, attempts: loginAttempts });
+        return messageDiv.innerHTML = '<div class="error">Too many attempts. Please refresh and try again.</div>';
       }
       
-      // Show loading state
+      // Loading state
       submitBtn.classList.add('loading');
       submitBtn.disabled = true;
       submitBtn.textContent = isLoginMode ? 'Logging in...' : 'Creating account...';
       
-      if (isLoginMode) {
-        // Login attempt - simplified for ESP32
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Logging in...';
-        
-        fetch('/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.text();
-          }
-          throw new Error('Login failed');
-        })
-        .then(data => {
-          if (data.includes('success') || data.includes('dashboard')) {
-            messageDiv.innerHTML = '<div class="success">Login successful!</div>';
-            logActivity('LOGIN_SUCCESS', { username: username });
-            setTimeout(() => {
+      const endpoint = isLoginMode ? '/login' : '/register';
+      const bodyData = isLoginMode 
+        ? `username=${encodeURIComponent(formData.username)}&password=${encodeURIComponent(formData.password)}`
+        : `username=${encodeURIComponent(formData.username)}&email=${encodeURIComponent(formData.email)}&password=${encodeURIComponent(formData.password)}`;
+      
+      fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: bodyData
+      })
+      .then(response => response.ok ? response.text() : Promise.reject('Request failed'))
+      .then(data => {
+        if (data.includes('success') || (isLoginMode && data.includes('dashboard'))) {
+          messageDiv.innerHTML = `<div class="success">${isLoginMode ? 'Login' : 'Registration'} successful!</div>`;
+          logActivity(isLoginMode ? 'LOGIN_SUCCESS' : 'REGISTER_SUCCESS', { username: formData.username });
+          
+          setTimeout(() => {
+            if (isLoginMode) {
               window.location.href = '/dashboard';
-            }, 1000);
-          } else {
-            throw new Error('Invalid credentials');
-          }
-        })
-        .catch(error => {
-          loginAttempts++;
-          messageDiv.innerHTML = '<div class="error">Invalid credentials</div>';
-          logActivity('LOGIN_FAILED', { username: username, attempts: loginAttempts });
-        })
-        .finally(() => {
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'Login';
-        });
-        
-      } else {
-        // Registration - simplified for ESP32
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Creating account...';
-        
-        fetch('/register', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: `username=${encodeURIComponent(username)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.text();
-          }
-          throw new Error('Registration failed');
-        })
-        .then(data => {
-          if (data.includes('success')) {
-            messageDiv.innerHTML = '<div class="success">Registration successful! Please login.</div>';
-            logActivity('REGISTER_SUCCESS', { username: username, email: email });
-            setTimeout(() => {
+            } else {
               toggleForm();
-              document.getElementById('username').value = username;
-            }, 2000);
-          } else {
-            throw new Error(data);
-          }
-        })
-        .catch(error => {
-          messageDiv.innerHTML = '<div class="error">Registration failed</div>';
-          logActivity('REGISTER_FAILED', { username: username, email: email });
-        })
-        .finally(() => {
+              document.getElementById('username').value = formData.username;
+            }
+          }, isLoginMode ? 1000 : 2000);
+        } else {
+          throw new Error('Invalid response');
+        }
+      })
+      .catch(error => {
+        if (isLoginMode) loginAttempts++;
+        messageDiv.innerHTML = `<div class="error">${isLoginMode ? 'Invalid credentials' : 'Registration failed'}</div>`;
+        logActivity(isLoginMode ? 'LOGIN_FAILED' : 'REGISTER_FAILED', { username: formData.username });
+      })
+      .finally(() => {
+        if (!data || !data.includes('success')) {
           submitBtn.disabled = false;
-          submitBtn.textContent = 'Create Account';
-        });
-      }
+          submitBtn.textContent = isLoginMode ? 'Login' : 'Create Account';
+          submitBtn.classList.remove('loading');
+        }
+      });
     });
     
-    // Show ESP32 ready status
+    // ESP32 system ready
     console.log('ESP32 Flood Monitor Login System Ready');
   </script>
 </body>
