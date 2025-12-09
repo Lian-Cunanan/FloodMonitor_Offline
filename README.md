@@ -330,7 +330,6 @@ graph TB
 |--------------------|----------------|------------------------|-------------------------|
 | **Arduino IDE** | 2.0 or newer | arduino.cc/downloads | Standard installation |
 | **ESP32 Board Package** | Latest stable | Espressif Systems | Board Manager installation |
-| **USB Drivers** | Platform-specific | Device manufacturer | System-dependent setup |
 
 </div>
 
@@ -426,16 +425,61 @@ After installation, verify these includes work in Arduino IDE:
 #include "database.h"          // ✅ Project - Database management
 ```
 
-### 🚫 **Libraries NOT Used in This Project**
+### 🚀 **How to Set Up the Code**
 
-The following libraries mentioned in previous documentation are **NOT required**:
-- ~~ArduinoJson~~ (Manual JSON string building used instead)
-- ~~NewPing~~ (Direct ultrasonic sensor implementation)
-- ~~LiquidCrystal_I2C~~ (No LCD display in current implementation)
-- ~~Wire~~ (No I2C devices used)
-- ~~sqlite3~~ (Custom database implementation used)
-- ~~NTPClient~~ (Local timestamps used)
-- ~~PubSubClient~~ (No MQTT implementation)
+Follow these steps to deploy the flood monitoring system on your ESP32:
+
+#### **Step 1: Download and Prepare**
+1. **Download** the complete project files from GitHub
+2. **Extract** all files to your Arduino projects folder
+3. **Open** `FloodMonitor_Offline.ino` in Arduino IDE
+4. **Verify** all header files are in the same folder
+
+#### **Step 2: Configure Arduino IDE**
+1. **Select Board**: Go to `Tools → Board → ESP32 Arduino → ESP32 Dev Module`
+2. **Set Port**: Select the correct COM port under `Tools → Port`
+3. **Upload Speed**: Set to `921600` for faster uploads
+4. **Partition Scheme**: Select `Default 4MB with spiffs (1.2MB APP/1.5MB SPIFFS)`
+
+#### **Step 3: Hardware Connections**
+```cpp
+// Connect sensors to these ESP32 pins:
+DHT22 Sensor    → GPIO 4
+Servo Motor     → GPIO (configured in Sensors.h)
+Wake-up Button  → GPIO 33
+Rain Sensor     → Analog pin (via SensorManager)
+Ultrasonic      → Trigger/Echo pins (via SensorManager)
+Light Sensor    → Analog pin (via SensorManager)
+Power Supply    → 5V 2A adapter
+```
+
+#### **Step 4: Upload Process**
+1. **Connect** ESP32 to computer via USB
+2. **Press** and **hold** the `BOOT` button on ESP32
+3. **Click** Upload in Arduino IDE
+4. **Release** BOOT button when "Connecting..." appears
+5. **Wait** for upload completion
+
+#### **Step 5: Initial Setup**
+1. **Open Serial Monitor** at 115200 baud rate
+2. **Watch** for WiFi network creation messages
+3. **Connect** to "FloodMonitor_AP" WiFi network
+4. **Navigate** to `192.168.4.1` in web browser
+5. **Complete** initial system configuration
+
+#### **Step 6: System Configuration**
+- **WiFi Settings**: Configure network credentials if needed
+- **Sensor Calibration**: Adjust thresholds in web interface
+- **User Accounts**: Create admin and user accounts
+- **Testing**: Verify all sensors are reading correctly
+
+#### **Step 7: Operation Modes**
+```cpp
+// The system supports three modes:
+AUTO Mode       → Automatic flood gate control
+MAINTENANCE     → Manual override capabilities  
+SLEEP Mode      → Power-saving deep sleep
+```
 
 ### ⚙️ **System Features Implementation**
 
@@ -456,52 +500,30 @@ The following libraries mentioned in previous documentation are **NOT required**
 
 ## 📱 **User Interface Features**
 
-### 🎨 **Dashboard Components**
+### 🌐 **Web Interface**
+- **Responsive Dashboard**: Real-time monitoring of all sensors
+- **Control Panel**: Manual control for flood gates and system settings
+- **User Management**: Admin and user roles with secure login
+- **Data Visualization**: Graphs and charts for historical data analysis
+- **Settings Configuration**: Adjust system parameters and thresholds
 
-<div align="center">
+### 📱 **Mobile Interface**
+- **Adaptive Layout**: Optimized for smartphones and tablets
+- **Touch Controls**: Easy access to controls and settings
+- **Real-time Notifications**: Alerts for critical events and updates
+- **Quick Actions**: One-tap access to common functions
 
-| 🖥️ **UI Component** | 📊 **Functionality** | 📱 **Mobile Support** | ⚡ **Real-Time Updates** |
-|--------------------|---------------------|---------------------|-------------------------|
-| **Water Level Gauge** | Animated SVG circle | Touch-friendly | 3-second intervals |
-| **Environmental Grid** | Live sensor data | Responsive layout | Continuous monitoring |
-| **Gate Control Panel** | Interactive buttons | Large touch targets | Immediate response |
-| **System Alerts** | Priority notifications | Mobile-optimized | Event-driven updates |
-| **Action Center** | Quick access tools | Swipe gestures | Context-sensitive |
-| **Live Logs Display** | Real-time activity | Scrollable interface | Auto-refresh |
-
-</div>
-
-### 🔐 **Authentication Interface**
-
-<div align="center">
-
-| 🔑 **Auth Feature** | 🎨 **Design Element** | 🛡️ **Security Measure** | 📱 **Mobile Experience** |
-|--------------------|----------------------|------------------------|------------------------|
-| **Login Form** | Two-panel layout | Secure credential handling | Touch-optimized inputs |
-| **Registration** | Tabbed interface | Password strength validation | Real-time feedback |
-| **Session Management** | Seamless transitions | Auto-logout protection | Background persistence |
-| **Error Handling** | User-friendly messages | Brute force protection | Graceful degradation |
-
-</div>
+### 🔒 **Security Features**
+- **Secure Login**: Username and password authentication
+- **Session Management**: Automatic logout after inactivity
+- **Data Encryption**: Secure transmission of sensitive data
+- **Access Control**: Role-based access for users and admins
 
 ---
 
-## 🐛 **Troubleshooting Matrix**
+## 📚 **Documentation & Support**
 
-### ❌ **Common Issues & Solutions**
-
-<div align="center">
-
-| 🚨 **Issue Category** | 🔍 **Problem** | ✅ **Solution** | 🎯 **Prevention** |
-|----------------------|----------------|----------------|------------------|
-| **Network Connectivity** | WiFi connection failure | Check 2.4GHz network | Use strong passwords |
-| **Sensor Readings** | Inconsistent data | Verify wiring/power | Use quality components |
-| **Web Interface** | Page loading issues | Check IP address | Clear browser cache |
-| **Upload Errors** | Code deployment fails | Select correct board | Close serial monitor |
-| **Authentication** | Login problems | Reset credentials | Check database integrity |
-| **Performance** | System lag | Monitor memory usage | Optimize code |
-
-</div>
+For detailed documentation, troubleshooting, and support, visit the [GitHub repository](https://github.com/Lian-Cunanan/FloodMonitor_Offline) and check the **Wiki** section. Join the community forum for discussions, feature requests, and collaboration opportunities.
 
 ---
 
@@ -519,25 +541,6 @@ The following libraries mentioned in previous documentation are **NOT required**
 | **Security Implementation** | Authentication + encryption | Cybersecurity practices | Advanced |
 | **System Integration** | Hardware-software fusion | Industrial automation | Expert |
 | **User Experience** | Responsive design | Interface development | Professional |
-
-</div>
-
----
-
-## 🔮 **Future Enhancement Roadmap**
-
-<div align="center">
-
-| 🚀 **Enhancement** | 📊 **Complexity** | ⏱️ **Timeline** | 💰 **Resource Requirement** |
-|-------------------|------------------|----------------|---------------------------|
-| **📧 Email Notifications** | Medium | 2-3 weeks | Moderate development |
-| **📊 Data Visualization** | High | 4-6 weeks | Significant effort |
-| **🌙 Dark Mode Interface** | Low | 1 week | Minimal resources |
-| **📱 Mobile App** | High | 8-12 weeks | Major development |
-| **☁️ Cloud Integration** | Very High | 12-16 weeks | Extensive resources |
-| **🔔 Push Notifications** | Medium | 3-4 weeks | Moderate effort |
-| **📈 AI Analytics** | Very High | 16+ weeks | Research & development |
-| **🗺️ GPS Integration** | Medium | 2-4 weeks | Hardware additions |
 
 </div>
 
