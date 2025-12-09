@@ -29,16 +29,16 @@ The **IoT Flood Monitor Pro** is a complete, production-ready flood monitoring s
 <table align="center">
   <tr>
     <td align="center">
-      <img src="profile_pictures/Lian.jpg" width="100px;" style="border-radius: 50%;" alt="Lian Cunanan"/><br />
-      <sub><b>🚀 Lian Cunanan</b></sub><br />
+      <img src="profile_pictures/aldrich.jpg" width="100px;" style="border-radius: 50%;" alt="Aldrich Icat"/><br />
+      <sub><b>🚀 Aldrich Icat</b></sub><br />
       <sub>Lead Developer & System Architect</sub><br />
-      <a href="https://github.com/Lian-Cunanan">GitHub</a> | 
-      <a href="https://www.linkedin.com/in/lian-vince-cunanan-3930212a4/">LinkedIn</a>
     </td>
     <td align="center">
-      <img src="profile_pictures/ardyan.jpg" width="100px;" style="border-radius: 50%;" alt="Ardyan Perez"/><br />
-      <sub><b>🔧 Ardyan Perez</b></sub><br />
-      <sub>Hardware Engineer & IoT Specialist</sub>
+      <img src="profile_pictures/Lian.jpg" width="100px;" style="border-radius: 50%;" alt="Lian Cunanan"/><br />
+      <sub><b>🎨 Lian Cunanan</b></sub><br />
+      <sub>UI/UX Designer & Frontend Developer</sub><br />
+      <a href="https://github.com/Lian-Cunanan">GitHub</a> | 
+      <a href="https://www.linkedin.com/in/lian-vince-cunanan-3930212a4/">LinkedIn</a>
     </td>
     <td align="center">
       <img src="profile_pictures/kenneth.jpg" width="100px;" style="border-radius: 50%;" alt="Kenneth Manarang"/><br />
@@ -48,9 +48,9 @@ The **IoT Flood Monitor Pro** is a complete, production-ready flood monitoring s
   </tr>
   <tr>
     <td align="center">
-      <img src="profile_pictures/aldrich.jpg" width="100px;" style="border-radius: 50%;" alt="Aldrich Icat"/><br />
-      <sub><b>🎨 Aldrich Icat</b></sub><br />
-      <sub>UI/UX Designer & Frontend Developer</sub>
+      <img src="profile_pictures/ardyan.jpg" width="100px;" style="border-radius: 50%;" alt="Ardyan Perez"/><br />
+      <sub><b>🔧 Ardyan Perez</b></sub><br />
+      <sub>Hardware Engineer & IoT Specialist</sub>
     </td>
     <td align="center">
       <img src="profile_pictures/Charles.png" width="100px;" style="border-radius: 50%;" alt="Charles Mirande"/><br />
