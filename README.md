@@ -6,7 +6,7 @@
 [![Made with ESP32](https://img.shields.io/badge/Made%20with-ESP32-blue?style=for-the-badge&logo=espressif)](https://www.espressif.com/)
 [![Arduino IDE](https://img.shields.io/badge/Arduino-IDE-00979D?style=for-the-badge&logo=arduino&logoColor=white)](https://www.arduino.cc/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
-[![Status: Production Ready](https://img.shields.io/badge/Status-Production%20Ready-brightgreen?style=for-the-badge)](https://github.com/Lian-Cunanan/FloodMonitor_Offline)
+[![Status: Final Project](https://img.shields.io/badge/Status-Final%20Project-brightgreen?style=for-the-badge)](https://github.com/Lian-Cunanan/FloodMonitor_Offline)
 
 *A professional ESP32-based flood monitoring system with enterprise-grade web interface, secure authentication, real-time logging, and automated flood control capabilities.*
 
@@ -384,23 +384,6 @@ graph TB
 # AsyncTCP: https://github.com/me-no-dev/AsyncTCP (dependency)
 ```
 
-### 📋 **Pin Configuration Used in Code**
-
-```cpp
-// Pin definitions from actual implementation
-#define DHT_PIN 4              // DHT22 temperature/humidity sensor
-#define DHT_TYPE DHT22         // Sensor type specification
-#define WAKE_UP_PIN 33         // System wake-up button
-#define DNS_PORT 53            // DNS server port for captive portal
-#define EEPROM_SIZE 512        // EEPROM storage allocation
-
-// Sensor thresholds from config
-#define WATER_OPEN_PERCENT 70  // Critical water level (gate opens)
-#define WATER_SAFE_PERCENT 60  // Safe water level (gate closes)  
-#define RAIN_THRESHOLD 500     // Rain detection threshold
-#define SENSOR_READ_INTERVAL 5000  // 5-second sensor reading interval
-```
-
 ### ✅ **Library Verification Checklist**
 
 After installation, verify these includes work in Arduino IDE:
@@ -441,16 +424,18 @@ Follow these steps to deploy the flood monitoring system on your ESP32:
 3. **Upload Speed**: Set to `921600` for faster uploads
 4. **Partition Scheme**: Select `Default 4MB with spiffs (1.2MB APP/1.5MB SPIFFS)`
 
-#### **Step 3: Hardware Connections**
+#### **Step 3: Hardware Connections (Example Configuration)**
 ```cpp
-// Connect sensors to these ESP32 pins:
-DHT22 Sensor    → GPIO 4
+// Example sensor connections to ESP32 pins:
+DHT22 Sensor    → GPIO 4 (example)
 Servo Motor     → GPIO (configured in Sensors.h)
-Wake-up Button  → GPIO 33
+Wake-up Button  → GPIO 33 (example)
 Rain Sensor     → Analog pin (via SensorManager)
 Ultrasonic      → Trigger/Echo pins (via SensorManager)
 Light Sensor    → Analog pin (via SensorManager)
 Power Supply    → 5V 2A adapter
+
+Note: Actual pin assignments may vary based on your specific setup
 ```
 
 #### **Step 4: Upload Process**
@@ -553,7 +538,7 @@ For detailed documentation, troubleshooting, and support, visit the [GitHub repo
 | 📋 **Project Details** | 📊 **Information** |
 |------------------------|-------------------|
 | **License** | MIT License - Educational & Commercial Use |
-| **Development Status** | Production Ready |
+| **Development Status** | Final Project Complete |
 | **Documentation** | Comprehensive & Professional |
 | **Support** | GitHub Issues & Community |
 | **Target Audience** | Students, Developers, IoT Enthusiasts |
@@ -580,6 +565,6 @@ For detailed documentation, troubleshooting, and support, visit the [GitHub repo
 
 ---
 
-<sub>🎓 Professional IoT Development Project | Built for Learning & Real-World Application | © 2024 Lian Cunanan & Development Team</sub>
+<sub>🎓 Student Project - Pampanga State University | Built for Learning & Educational Purpose | © 2024 Lian Cunanan & Development Team</sub>
 
 </div>
