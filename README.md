@@ -343,39 +343,30 @@ graph TB
 
 | 📦 **Library Name** | 👨‍💻 **Author** | 🎯 **Purpose** | ⭐ **Priority** |
 |--------------------|----------------|----------------|----------------|
-| **WiFi** | Espressif | WiFi connectivity | Critical (Built-in) |
-| **WebServer** | Espressif | HTTP web server | Critical (Built-in) |
-| **FS** | Espressif | File system operations | Critical (Built-in) |
-| **SPIFFS** | Espressif | Flash file storage | Essential (Built-in) |
+| **ESPAsyncWebServer** | lacamera | Async web server | Critical |
+| **WebSockets** | Markus Sattler | WebSocket communication | Critical |
+| **ESP32Servo** | Kevin Harrington | Servo motor control | Essential |
+| **DHT sensor library** | Adafruit | Temperature & humidity | Essential |
 
-#### **Database & JSON Libraries**
+#### **Built-in ESP32 Libraries**
 
 | 📦 **Library Name** | 👨‍💻 **Author** | 🎯 **Purpose** | ⭐ **Priority** |
 |--------------------|----------------|----------------|----------------|
-| **sqlite3** | Espressif | SQLite database | Critical |
-| **ArduinoJson** | Benoit Blanchon | JSON data handling | Essential |
+| **WiFi** | Espressif | WiFi connectivity | Critical (Built-in) |
+| **EEPROM** | Espressif | Non-volatile storage | Essential (Built-in) |
+| **DNSServer** | Espressif | DNS captive portal | Essential (Built-in) |
 
-#### **Sensor Libraries**
+#### **Project-Specific Files**
 
-| 📡 **Library Name** | 👨‍💻 **Author** | 🔧 **Compatible Sensors** | 🎯 **Usage** |
-|--------------------|----------------|---------------------------|-------------|
-| **DHT sensor library** | Adafruit | DHT22, DHT11 | Temperature & humidity |
-| **NewPing** | Tim Eckel | HC-SR04 ultrasonic | Water level detection |
-| **ESP32Servo** | Kevin Harrington | SG90, MG996R | Gate control servo |
-
-#### **Display & Interface Libraries**
-
-| 🖥️ **Library Name** | 👨‍💻 **Author** | 📊 **Features** | 🎯 **Usage** |
-|--------------------|----------------|----------------|-------------|
-| **LiquidCrystal_I2C** | Frank de Brabander | I2C LCD display | Status display |
-| **Wire** | Arduino | I2C communication | Built-in ESP32 |
-
-#### **Security & Authentication**
-
-| 🔐 **Library Name** | 👨‍💻 **Author** | 🛡️ **Purpose** | 🎯 **Implementation** |
-|--------------------|----------------|----------------|---------------------|
-| **mbedtls** | ARM | Encryption/hashing | Built-in ESP32 |
-| **Preferences** | Espressif | Secure storage | Built-in ESP32 |
+| 📁 **File Name** | 🎯 **Purpose** | 📊 **Type** | 🔧 **Content** |
+|------------------|----------------|-------------|----------------|
+| **config.h** | System configuration | Header | Pin definitions, constants |
+| **Sensors.h** | Sensor management | Header | SensorManager class |
+| **index_html.h** | Main dashboard | HTML | Web interface |
+| **style_css.h** | Styling | CSS | Professional theme |
+| **script_js.h** | Functionality | JavaScript | Real-time updates |
+| **login_html.h** | Authentication | HTML | Login interface |
+| **database.h** | Data storage | Header | DatabaseManager class |
 
 </div>
 
@@ -385,59 +376,99 @@ graph TB
 # Arduino IDE Library Manager Installation
 1. Open Arduino IDE → Tools → Manage Libraries
 2. Search and install these libraries:
-   - "DHT sensor library" by Adafruit
-   - "NewPing" by Tim Eckel  
+   - "ESP Async WebServer" by lacamera
+   - "WebSockets" by Markus Sattler  
    - "ESP32Servo" by Kevin Harrington
-   - "LiquidCrystal I2C" by Frank de Brabander
-   - "ArduinoJson" by Benoit Blanchon
+   - "DHT sensor library" by Adafruit
 
-# Built-in ESP32 Libraries (Already Available)
-- WiFi, WebServer, FS, SPIFFS
-- Wire, Preferences, mbedtls
-- sqlite3 (if using ESP32 with SQLite support)
+# Manual Installation (if not found in Library Manager)
+# ESPAsyncWebServer: https://github.com/me-no-dev/ESPAsyncWebServer
+# AsyncTCP: https://github.com/me-no-dev/AsyncTCP (dependency)
+```
+
+### 📋 **Pin Configuration Used in Code**
+
+```cpp
+// Pin definitions from actual implementation
+#define DHT_PIN 4              // DHT22 temperature/humidity sensor
+#define DHT_TYPE DHT22         // Sensor type specification
+#define WAKE_UP_PIN 33         // System wake-up button
+#define DNS_PORT 53            // DNS server port for captive portal
+#define EEPROM_SIZE 512        // EEPROM storage allocation
+
+// Sensor thresholds from config
+#define WATER_OPEN_PERCENT 70  // Critical water level (gate opens)
+#define WATER_SAFE_PERCENT 60  // Safe water level (gate closes)  
+#define RAIN_THRESHOLD 500     // Rain detection threshold
+#define SENSOR_READ_INTERVAL 5000  // 5-second sensor reading interval
+```
+
+### ✅ **Library Verification Checklist**
+
+After installation, verify these includes work in Arduino IDE:
+
+```cpp
+// Essential includes used in FloodMonitor_Offline.ino
+#include <WiFi.h>              // ✅ Built-in ESP32 - Network connectivity
+#include <ESPAsyncWebServer.h> // ✅ External - Async web server
+#include <WebSocketsServer.h>  // ✅ External - WebSocket server
+#include <ESP32Servo.h>        // ✅ External - Servo motor control
+#include <DHT.h>               // ✅ External - DHT sensor library
+#include <EEPROM.h>            // ✅ Built-in ESP32 - Storage
+#include <DNSServer.h>         // ✅ Built-in ESP32 - DNS captive portal
+
+// Project header files (included with project)
+#include "config.h"            // ✅ Project - Configuration constants
+#include "Sensors.h"           // ✅ Project - Sensor management class  
+#include "index_html.h"        // ✅ Project - Main dashboard HTML
+#include "style_css.h"         // ✅ Project - CSS styling
+#include "script_js.h"         // ✅ Project - JavaScript functionality
+#include "login_html.h"        // ✅ Project - Login interface
+#include "database.h"          // ✅ Project - Database management
 ```
 
 ### 🚫 **Libraries NOT Used in This Project**
 
-The following libraries are **NOT required** for this implementation:
-- ~~ESPAsyncWebServer~~ (Using built-in WebServer)
-- ~~AsyncTCP~~ (Using synchronous connections)
-- ~~OneWire~~ (Not using DS18B20 sensors)
-- ~~DallasTemperature~~ (Using DHT22 instead)
-- ~~NTPClient~~ (Using local timestamps)
+The following libraries mentioned in previous documentation are **NOT required**:
+- ~~ArduinoJson~~ (Manual JSON string building used instead)
+- ~~NewPing~~ (Direct ultrasonic sensor implementation)
+- ~~LiquidCrystal_I2C~~ (No LCD display in current implementation)
+- ~~Wire~~ (No I2C devices used)
+- ~~sqlite3~~ (Custom database implementation used)
+- ~~NTPClient~~ (Local timestamps used)
 - ~~PubSubClient~~ (No MQTT implementation)
 
-### ✅ **Library Verification Checklist**
+### 🔧 **Hardware Components Actually Used**
 
-After installation, verify these libraries in Arduino IDE:
+Based on the code analysis:
+
+<div align="center">
+
+| 🎯 **Component** | 📏 **Connection** | 🔌 **Pin** | 📝 **Usage** |
+|------------------|-------------------|-------------|---------------|
+| **ESP32 DevKit V1** | Main controller | - | System processing |
+| **DHT22 Sensor** | Digital pin | GPIO 4 | Temperature & humidity |
+| **Servo Motor** | PWM control | Via ESP32Servo lib | Gate control |
+| **Push Button** | Digital input | GPIO 33 | Mode switching |
+| **Ultrasonic Sensor** | Managed by Sensors.h | Via SensorManager | Water level |
+| **Rain Sensor** | Analog input | Via SensorManager | Rain detection |
+| **Light Sensor** | Analog input | Via SensorManager | Light monitoring |
+
+</div>
+
+### ⚙️ **System Features Implementation**
 
 ```cpp
-// Essential includes used in the actual project
-#include <WiFi.h>              // ✅ Built-in ESP32 - Network connectivity
-#include <WebServer.h>         // ✅ Built-in ESP32 - HTTP server
-#include <FS.h>                // ✅ Built-in ESP32 - File operations
-#include <SPIFFS.h>            // ✅ Built-in ESP32 - Flash storage
-#include <ArduinoJson.h>       // ✅ Library Manager - JSON handling
-#include <DHT.h>               // ✅ Library Manager - Temperature/humidity
-#include <NewPing.h>           // ✅ Library Manager - Ultrasonic sensor
-#include <ESP32Servo.h>        // ✅ Library Manager - Servo control
-#include <LiquidCrystal_I2C.h> // ✅ Library Manager - LCD display
-#include <Wire.h>              // ✅ Built-in ESP32 - I2C communication
-#include <Preferences.h>       // ✅ Built-in ESP32 - Settings storage
-#include <sqlite3.h>           // ✅ ESP32 SQLite - Database operations
-```
-
-**🎯 Hardware-Specific Pin Definitions:**
-```cpp
-// Sensor pin assignments used in code
-#define DHT_PIN 4              // DHT22 data pin
-#define TRIG_PIN 5             // HC-SR04 trigger
-#define ECHO_PIN 18            // HC-SR04 echo
-#define SERVO_PIN 13           // Servo motor control
-#define RAIN_PIN 34            // Rain sensor (analog)
-#define LDR_PIN 35             // Light sensor (analog)
-#define SDA_PIN 21             // I2C data (LCD)
-#define SCL_PIN 22             // I2C clock (LCD)
+// Key features implemented in code:
+✅ Captive Portal with DNS redirection
+✅ WebSocket real-time communication  
+✅ Three operation modes (AUTO/MAINTENANCE/SLEEP)
+✅ Database logging with activity tracking
+✅ Automatic gate control based on water levels
+✅ 10-minute interval sensor data logging
+✅ Factory reset functionality
+✅ Deep sleep mode with wake-up capability
+✅ Professional web interface with multiple endpoints
 ```
 
 ---
