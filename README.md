@@ -343,101 +343,102 @@ graph TB
 
 | 📦 **Library Name** | 👨‍💻 **Author** | 🎯 **Purpose** | ⭐ **Priority** |
 |--------------------|----------------|----------------|----------------|
-| **ESPAsyncWebServer** | lacamera | Web server functionality | Critical |
-| **AsyncTCP** | dvarrel | Asynchronous networking | Critical |
+| **WiFi** | Espressif | WiFi connectivity | Critical (Built-in) |
+| **WebServer** | Espressif | HTTP web server | Critical (Built-in) |
+| **FS** | Espressif | File system operations | Critical (Built-in) |
+| **SPIFFS** | Espressif | Flash file storage | Essential (Built-in) |
+
+#### **Database & JSON Libraries**
+
+| 📦 **Library Name** | 👨‍💻 **Author** | 🎯 **Purpose** | ⭐ **Priority** |
+|--------------------|----------------|----------------|----------------|
+| **sqlite3** | Espressif | SQLite database | Critical |
 | **ArduinoJson** | Benoit Blanchon | JSON data handling | Essential |
 
-</div>
-
-#### **Sensor Libraries (Choose Based on Your Sensors)**
+#### **Sensor Libraries**
 
 | 📡 **Library Name** | 👨‍💻 **Author** | 🔧 **Compatible Sensors** | 🎯 **Usage** |
 |--------------------|----------------|---------------------------|-------------|
-| **OneWire** | Paul Stoffregen | DS18B20, DS2438 | Temperature sensors |
-| **DallasTemperature** | Miles Burton | DS18B20 family | Digital thermometers |
-| **NewPing** | Tim Eckel | HC-SR04, US-100 | Ultrasonic distance |
-| **ServoESP32** | Jaroslav Paral | SG90, MG996R | Servo motor control |
+| **DHT sensor library** | Adafruit | DHT22, DHT11 | Temperature & humidity |
+| **NewPing** | Tim Eckel | HC-SR04 ultrasonic | Water level detection |
+| **ESP32Servo** | Kevin Harrington | SG90, MG996R | Gate control servo |
 
-#### **Optional Enhancement Libraries**
+#### **Display & Interface Libraries**
 
-| 🌐 **Library Name** | 👨‍💻 **Author** | 📊 **Features** | 🚀 **Benefits** |
-|--------------------|----------------|----------------|----------------|
-| **NTPClient** | Fabrice Weinberg | Network time sync | Accurate timestamps |
-| **PubSubClient** | Nick O'Leary | MQTT communication | IoT cloud integration |
+| 🖥️ **Library Name** | 👨‍💻 **Author** | 📊 **Features** | 🎯 **Usage** |
+|--------------------|----------------|----------------|-------------|
+| **LiquidCrystal_I2C** | Frank de Brabander | I2C LCD display | Status display |
+| **Wire** | Arduino | I2C communication | Built-in ESP32 |
 
-</div>
+#### **Security & Authentication**
 
-### 🛠️ **Step-by-Step Installation Instructions**
-
-<div align="center">
-
-| 📋 **Step** | 🔧 **Action** | 📝 **Details** |
-|-------------|---------------|----------------|
-| **1** | Open Arduino IDE | Launch Arduino IDE 2.0+ |
-| **2** | Access Library Manager | Go to **Sketch → Include Library → Manage Libraries** |
-| **3** | Search Libraries | Search for each library name listed above |
-| **4** | Install by Author | Select the correct library by the specified author |
-| **5** | Restart IDE | Close and restart Arduino IDE after installation |
+| 🔐 **Library Name** | 👨‍💻 **Author** | 🛡️ **Purpose** | 🎯 **Implementation** |
+|--------------------|----------------|----------------|---------------------|
+| **mbedtls** | ARM | Encryption/hashing | Built-in ESP32 |
+| **Preferences** | Espressif | Secure storage | Built-in ESP32 |
 
 </div>
 
-#### **Manual GitHub Installation**
+### 🛠️ **Library Installation Commands**
 
-For libraries not found in Library Manager:
+```bash
+# Arduino IDE Library Manager Installation
+1. Open Arduino IDE → Tools → Manage Libraries
+2. Search and install these libraries:
+   - "DHT sensor library" by Adafruit
+   - "NewPing" by Tim Eckel  
+   - "ESP32Servo" by Kevin Harrington
+   - "LiquidCrystal I2C" by Frank de Brabander
+   - "ArduinoJson" by Benoit Blanchon
 
-<div align="center">
+# Built-in ESP32 Libraries (Already Available)
+- WiFi, WebServer, FS, SPIFFS
+- Wire, Preferences, mbedtls
+- sqlite3 (if using ESP32 with SQLite support)
+```
 
-| 📦 **Library** | 🔗 **GitHub Repository** | 📁 **Installation Path** |
-|---------------|-------------------------|-------------------------|
-| **ESPAsyncWebServer** | `https://github.com/me-no-dev/ESPAsyncWebServer` | `Arduino/libraries/ESPAsyncWebServer/` |
-| **AsyncTCP** | `https://github.com/me-no-dev/AsyncTCP` | `Arduino/libraries/AsyncTCP/` |
+### 🚫 **Libraries NOT Used in This Project**
 
-</div>
-
-**Manual Installation Steps:**
-1. Download ZIP file from GitHub repository
-2. Extract to `Arduino/libraries/` folder
-3. Restart Arduino IDE
-4. Verify installation in **Sketch → Include Library**
-
-### 🔗 **Alternative Installation Methods**
-
-#### **Built-in ESP32 Libraries**
-
-These libraries come pre-installed with the ESP32 board package:
-
-<div align="center">
-
-| 🔧 **Library** | 📊 **Purpose** | 🎯 **Usage in Project** |
-|---------------|----------------|----------------------|
-| **WiFi** | Network connectivity | Internet connection management |
-| **WebServer** | HTTP server functions | Alternative to AsyncWebServer |
-| **SPIFFS** | File system storage | Web files and configuration |
-| **FS** | File system operations | File read/write operations |
-| **Update** | OTA firmware updates | Remote code deployment |
-| **Preferences** | Non-volatile storage | Settings and configuration |
-
-</div>
+The following libraries are **NOT required** for this implementation:
+- ~~ESPAsyncWebServer~~ (Using built-in WebServer)
+- ~~AsyncTCP~~ (Using synchronous connections)
+- ~~OneWire~~ (Not using DS18B20 sensors)
+- ~~DallasTemperature~~ (Using DHT22 instead)
+- ~~NTPClient~~ (Using local timestamps)
+- ~~PubSubClient~~ (No MQTT implementation)
 
 ### ✅ **Library Verification Checklist**
 
-After installation, verify these libraries appear in your Arduino IDE:
+After installation, verify these libraries in Arduino IDE:
 
 ```cpp
-// Include test - Add to a new sketch to verify installation
-#include <WiFi.h>              // ✅ Built-in ESP32
-#include <ESPAsyncWebServer.h>  // ✅ Manual install required
-#include <AsyncTCP.h>           // ✅ Manual install required  
-#include <ArduinoJson.h>        // ✅ Library Manager
-#include <NewPing.h>           // ✅ Library Manager (optional)
-#include <ESP32Servo.h>        // ✅ Library Manager (for servo)
+// Essential includes used in the actual project
+#include <WiFi.h>              // ✅ Built-in ESP32 - Network connectivity
+#include <WebServer.h>         // ✅ Built-in ESP32 - HTTP server
+#include <FS.h>                // ✅ Built-in ESP32 - File operations
+#include <SPIFFS.h>            // ✅ Built-in ESP32 - Flash storage
+#include <ArduinoJson.h>       // ✅ Library Manager - JSON handling
+#include <DHT.h>               // ✅ Library Manager - Temperature/humidity
+#include <NewPing.h>           // ✅ Library Manager - Ultrasonic sensor
+#include <ESP32Servo.h>        // ✅ Library Manager - Servo control
+#include <LiquidCrystal_I2C.h> // ✅ Library Manager - LCD display
+#include <Wire.h>              // ✅ Built-in ESP32 - I2C communication
+#include <Preferences.h>       // ✅ Built-in ESP32 - Settings storage
+#include <sqlite3.h>           // ✅ ESP32 SQLite - Database operations
 ```
 
-**🔍 Troubleshooting Library Issues:**
-- **Library not found**: Check spelling and author name
-- **Compilation errors**: Verify library compatibility with ESP32
-- **Version conflicts**: Update to latest stable versions
-- **Include errors**: Check library installation path
+**🎯 Hardware-Specific Pin Definitions:**
+```cpp
+// Sensor pin assignments used in code
+#define DHT_PIN 4              // DHT22 data pin
+#define TRIG_PIN 5             // HC-SR04 trigger
+#define ECHO_PIN 18            // HC-SR04 echo
+#define SERVO_PIN 13           // Servo motor control
+#define RAIN_PIN 34            // Rain sensor (analog)
+#define LDR_PIN 35             // Light sensor (analog)
+#define SDA_PIN 21             // I2C data (LCD)
+#define SCL_PIN 22             // I2C clock (LCD)
+```
 
 ---
 
