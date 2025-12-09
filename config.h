@@ -1,5 +1,4 @@
 #pragma once
-<<<<<<< HEAD
 #include <Arduino.h>
 #include <ESP32Servo.h>
 #include <DHT.h>
@@ -14,20 +13,11 @@ enum SystemMode {
 };
 
 // --- 2. Pin Definitions ---
-=======
-
-// --- 1. Wi-Fi Settings ---
-const char *ssid = "FloodMonitor_Network";
-const char *password = "12345678";
-
-// --- 2. Sensor Pins ---
->>>>>>> d5a1704f3b13828ef3fbae00aa481f41e2ef0706
 #define WATER_LEVEL_PIN  34
 #define RAIN_SENSOR_PIN  35
 #define DHT_PIN          22
 #define LDR_PIN          32
 #define SERVO_PIN        13
-<<<<<<< HEAD
 #define WAKE_UP_PIN      33 
 
 // --- 3. Constants ---
@@ -56,22 +46,3 @@ extern SystemMode currentMode;
 extern Servo floodGate;
 extern DHT dht;
 extern DNSServer dnsServer;
-=======
-
-// --- 3. Sensor Configuration ---
-#define DHT_TYPE DHT22
-
-// --- 4. Logic Thresholds (Adjust these!) ---
-// Set the raw analog value (0-4095) from the water sensor that triggers the gate
-#define WATER_THRESHOLD 3000 
-// Set the raw analog value (0-4095) that indicates rain (lower = more sensitive)
-#define RAIN_THRESHOLD  2000 
-
-// --- 5. Global Variables ---
-Servo floodGate;
-int gateAngle = 0; // 0 = Closed, 90 = Open
-DHT dht(DHT_PIN, DHT_TYPE);
-
-AsyncWebServer server(80); // Server on port 80
-WebSocketsServer webSocket(81); // WebSocket on port 81
->>>>>>> d5a1704f3b13828ef3fbae00aa481f41e2ef0706
