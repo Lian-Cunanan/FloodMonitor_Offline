@@ -302,7 +302,6 @@ graph TB
 | **YL-83 Rain Sensor** | Analog + digital output | 3.3V @ 20mA | Rain detection |
 | **LDR + Resistor** | Light-dependent resistor | 3.3V @ 0.1mA | Light monitoring |
 | **Power Supply** | 5V 2A adapter | AC input | System power |
-| **Breadboard & Wires** | Standard breadboard | - | Connections |
 
 </div>
 
@@ -437,24 +436,6 @@ The following libraries mentioned in previous documentation are **NOT required**
 - ~~sqlite3~~ (Custom database implementation used)
 - ~~NTPClient~~ (Local timestamps used)
 - ~~PubSubClient~~ (No MQTT implementation)
-
-### 🔧 **Hardware Components Actually Used**
-
-Based on the code analysis:
-
-<div align="center">
-
-| 🎯 **Component** | 📏 **Connection** | 🔌 **Pin** | 📝 **Usage** |
-|------------------|-------------------|-------------|---------------|
-| **ESP32 DevKit V1** | Main controller | - | System processing |
-| **DHT22 Sensor** | Digital pin | GPIO 4 | Temperature & humidity |
-| **Servo Motor** | PWM control | Via ESP32Servo lib | Gate control |
-| **Push Button** | Digital input | GPIO 33 | Mode switching |
-| **Ultrasonic Sensor** | Managed by Sensors.h | Via SensorManager | Water level |
-| **Rain Sensor** | Analog input | Via SensorManager | Rain detection |
-| **Light Sensor** | Analog input | Via SensorManager | Light monitoring |
-
-</div>
 
 ### ⚙️ **System Features Implementation**
 
