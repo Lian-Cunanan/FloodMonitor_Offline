@@ -16,9 +16,13 @@
 
 </div>
 
+---
+
 ## 🎯 **Project Overview**
 
 The **IoT Flood Monitor Pro** is a complete, production-ready flood monitoring solution featuring a professional web dashboard, secure user authentication, comprehensive logging system, and automated flood control. Built with modern web technologies and enterprise-grade security for both educational and commercial deployment.
+
+---
 
 ## 👥 **Development Team**
 
@@ -61,6 +65,8 @@ The **IoT Flood Monitor Pro** is a complete, production-ready flood monitoring s
   </tr>
 </table>
 
+---
+
 ## 📸 **Project Screenshots**
 
 <div align="center">
@@ -77,6 +83,8 @@ The **IoT Flood Monitor Pro** is a complete, production-ready flood monitoring s
 > **Note:** This is a professional project showcasing IoT and web development skills. Interface screenshots available upon request.
 
 </div>
+
+---
 
 ## ✨ **Available Features**
 
@@ -126,6 +134,8 @@ The **IoT Flood Monitor Pro** is a complete, production-ready flood monitoring s
 </td>
 </tr>
 </table>
+
+---
 
 ## 🏗️ **System Architecture Overview**
 
@@ -182,6 +192,8 @@ graph TB
     style L fill:#ef4444,stroke:#dc2626,stroke-width:2px,color:#fff
 ```
 
+---
+
 ### 📡 **Data Flow Architecture**
 
 ```mermaid
@@ -228,6 +240,8 @@ graph LR
     style O1 fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#fff
 ```
 
+---
+
 ### 🌐 **Network & Security Architecture**
 
 ```mermaid
@@ -273,6 +287,8 @@ graph TB
     style AUTH fill:#ef4444,stroke:#dc2626,stroke-width:2px,color:#fff
 ```
 
+---
+
 ## 🔧 **Hardware Requirements**
 
 <div align="center">
@@ -303,6 +319,8 @@ graph TB
 
 </div>
 
+---
+
 ## 🚀 **Installation & Setup Guide**
 
 ### 📋 **Development Environment Setup**
@@ -328,6 +346,8 @@ graph TB
 | **ESPAsyncWebServer** | lacamera | Web server functionality | Critical |
 | **AsyncTCP** | dvarrel | Asynchronous networking | Critical |
 | **ArduinoJson** | Benoit Blanchon | JSON data handling | Essential |
+
+</div>
 
 #### **Sensor Libraries (Choose Based on Your Sensors)**
 
@@ -419,6 +439,8 @@ After installation, verify these libraries appear in your Arduino IDE:
 - **Version conflicts**: Update to latest stable versions
 - **Include errors**: Check library installation path
 
+---
+
 ## 📱 **User Interface Features**
 
 ### 🎨 **Dashboard Components**
@@ -449,6 +471,8 @@ After installation, verify these libraries appear in your Arduino IDE:
 
 </div>
 
+---
+
 ## 🐛 **Troubleshooting Matrix**
 
 ### ❌ **Common Issues & Solutions**
@@ -465,6 +489,8 @@ After installation, verify these libraries appear in your Arduino IDE:
 | **Performance** | System lag | Monitor memory usage | Optimize code |
 
 </div>
+
+---
 
 ## 🎓 **Educational & Professional Value**
 
@@ -483,20 +509,7 @@ After installation, verify these libraries appear in your Arduino IDE:
 
 </div>
 
-### 🏢 **Industry Applications**
-
-<div align="center">
-
-| 🏭 **Industry Sector** | 🎯 **Application** | 📊 **Scale** | 🚀 **Implementation** |
-|------------------------|-------------------|-------------|----------------------|
-| **Municipal Services** | City flood monitoring | Large-scale | Emergency response |
-| **Industrial Control** | Process monitoring | Medium-scale | Safety systems |
-| **Smart Buildings** | Environmental control | Building-wide | Automation systems |
-| **Agriculture** | Irrigation management | Farm-scale | Precision farming |
-| **Transportation** | Infrastructure monitoring | Regional | Traffic management |
-| **Energy Management** | System monitoring | Grid-scale | Smart grid integration |
-
-</div>
+---
 
 ## 🔮 **Future Enhancement Roadmap**
 
@@ -515,6 +528,8 @@ After installation, verify these libraries appear in your Arduino IDE:
 
 </div>
 
+---
+
 ## 📄 **Project Information**
 
 <div align="center">
@@ -529,6 +544,8 @@ After installation, verify these libraries appear in your Arduino IDE:
 | **Skill Level** | Intermediate to Advanced |
 
 </div>
+
+---
 
 ## 📞 **Contact & Support**
 
